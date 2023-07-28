@@ -1,0 +1,4 @@
+necesito conectar la base de datos con esto 
+
+necesito hacer que al enviar ya no aparezca nada en el input
+

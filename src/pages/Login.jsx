@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { supabase } from '../supabase/client';
 import { useNavigate } from "react-router-dom";
+import './Login.css'
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -9,10 +10,10 @@ function Login() {
 
     const navigate = useNavigate();
 
-    useEffect(()=>{
-        if(supabase.auth.getSession()){
+    useEffect(() => {
+        if (supabase.auth.getSession()) {
             navigate('/');
-        } 
+        }
     }, [navigate]);
 
     const handlerSubmit = async (e) => {
@@ -27,22 +28,25 @@ function Login() {
         }
     }
 
-    
-
     return (
-        <form onSubmit={handlerSubmit}>
-            <input
-                type="email" name="email"
-                placeholder="email"
-                onChange={e => setEmail(e.target.value)}
-            />
-            <input
-                type="password"
-                placeholder="password"
-                onChange={e => setPassword(e.target.value)}
-            />
-            <button>Login</button>
-        </form>
+        <div className="background-login">
+            <form className="form-login" onSubmit={handlerSubmit}>
+            <h1>Log in</h1>
+                <input
+                    className="form-login--email"
+                    type="email" name="email"
+                    placeholder="email"
+                    onChange={e => setEmail(e.target.value)}
+                />
+                <input
+                    className="form-login--password"
+                    type="password"
+                    placeholder="password"
+                    onChange={e => setPassword(e.target.value)}
+                />
+                <button className="form-login--button" >Log in</button>
+            </form>
+        </div>
     );
 }
 
