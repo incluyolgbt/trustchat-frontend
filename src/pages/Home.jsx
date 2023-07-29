@@ -2,72 +2,43 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabase/client";
-import './Home.css'
+import './Home.css';
+
+import io from 'socket.io-client';
+
+const socket = io("/");
 
 function Home() {
-    const defaultMessage = ['necesito que me pases la información', 'como estás', 'hola' ];
+    const defaultMessage = ['necesito que me pases la información', 'como estás', 'hola'];
     const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState(defaultMessage);
+    const [messages, setMessages] = useState([]);
 
-    async function handlerSubmit(e) {
+    function msgs(msg) { //para que no se reinicie messages cada vez que se le agregue algo
+        setMessages((state) => [msg, ...state]);
+    }
+
+    async function handlerSubmit(e) { //agrega los mensajes que yo envié
         e.preventDefault();
-        setMessages([message, ...messages]);
-        // try {
-        //     await fetch('https://chat.danielmartine91.repl.co/api/v1/client', {
-        //         method: 'POST', // or 'PUT'
-        //         body: JSON.stringify({
-        //             "to": number,
-        //             "object": "whatsapp_business_account",
-        //             "entry": [
-        //                 {
-        //                     "id": "116926351467394",
-        //                     "changes": [
-        //                         {
-        //                             "value": {
-        //                                 "messaging_product": "whatsapp",
-        //                                 "metadata": {
-        //                                     "display_phone_number": "15550758313",
-        //                                     "phone_number_id": "114329885063727"
-        //                                 },
-        //                                 "contacts": [
-        //                                     {
-        //                                         "profile": {
-        //                                             "name": "DanielMC"
-        //                                         },
-        //                                         "wa_id": "5213511507240"
-        //                                     }
-        //                                 ],
-        //                                 "messages": [
-        //                                     {
-        //                                         "from": "",
-        //                                         "id": "wamid.HBgNNTIxMzUxMTUwNzI0MBUCABIYFDNBRkZGM0QzNkVCNTI4Mzc0MDJBAA==",
-        //                                         "timestamp": "1690302479",
-        //                                         "text": {
-        //                                             "body": message
-        //                                         },
-        //                                         "type": "text"
-        //                                     }
-        //                                 ]
-        //                             },
-        //                             "field": "messages"
-        //                         }
-        //                     ]
-        //                 }
-        //             ]
-        //         }),
-        //         headers: {
-        //             'Content-Type': 'application/json; charset=utf-8'
-        //         }
-        //     });
-        // } catch (error) {
-        //     console.error(error);
-        // }
-
+        socket.emit('message', message);
+        msgs({
+            text: message,
+            from: 'me'
+        });
+        setMessage('');
     };
 
     useEffect(() => {
-        //pendiente al webhook de supabase
-    });
+        socket.on('message', msg => { // ese msg será el json recibido
+            msgs({
+                text: msg,
+                from: socket.id
+            });//agrega mensajes recibidos
+        })
+
+        return () => {
+            socket.off('message')
+        }
+    }, []);
 
     const navigate = useNavigate();
 
@@ -90,14 +61,16 @@ function Home() {
                 {
                     messages.map((message, i) => (
                         <li
-                            className="chat-container--message"
-                            key={i}><p>{message}</p></li>
+                            className={
+                                message.from != 'me' ? "chat-container--message--recieved" : "chat-container--message"}
+                            key={i}><p>{message.text}</p></li>
                     ))
                 }
             </ul>
             <form
                 className="type-message">
                 <input
+                    value={message}
                     className="type-message-editor"
                     type='text' onChange={(e) => setMessage(e.target.value)} />
                 <button
