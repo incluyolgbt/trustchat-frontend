@@ -1,4 +1,2 @@
-necesito conectar la base de datos con esto
-
 agregar un page loader
 

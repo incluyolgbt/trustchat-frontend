@@ -2,16 +2,16 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabase/client";
-import './Home.css';
-
 import io from 'socket.io-client';
+
+import './Home.css';
 
 const socket = io("/");
 
 function Home() {
-    const defaultMessage = ['necesito que me pases la información', 'como estás', 'hola'];
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
+    const [messageId, setMessageId] = useState('casita');
 
     function msgs(msg) { //para que no se reinicie messages cada vez que se le agregue algo
         setMessages((state) => [msg, ...state]);
@@ -19,20 +19,27 @@ function Home() {
 
     async function handlerSubmit(e) { //agrega los mensajes que yo envié
         e.preventDefault();
-        socket.emit('message', message);
+        socket.emit('message', {
+            text: message,
+            from: 'me',
+            to: '523511507240',
+            type: 'text',
+            messageId: messageId,
+        });
         msgs({
             text: message,
-            from: 'me'
+            from: 'me',
+            to: '523511507240',
+            type: 'text',
+            messageId: messageId
         });
         setMessage('');
     };
 
     useEffect(() => {
         socket.on('message', msg => { // ese msg será el json recibido
-            msgs({
-                text: msg,
-                from: socket.id
-            });//agrega mensajes recibidos
+            msgs(msg);//agrega mensajes recibidos
+            setMessageId(msg.messageId);
         })
 
         return () => {
