@@ -8,6 +8,7 @@ function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -23,6 +24,7 @@ function Login() {
                 email,
                 password,
             })
+
         } catch (error) {
             console.error(error);
         }

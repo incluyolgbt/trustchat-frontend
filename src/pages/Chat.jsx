@@ -8,10 +8,11 @@ import './Home.css';
 
 const socket = io("/");
 
-function Home() {
+function Chat() {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
-    const [messageId, setMessageId] = useState('casita');
+    const [messageId, setMessageId] = useState('');
+    const [userId, setUserId] = useState('');
 
     function msgs(msg) { //para que no se reinicie messages cada vez que se le agregue algo
         setMessages((state) => [msg, ...state]);
@@ -21,14 +22,14 @@ function Home() {
         e.preventDefault();
         socket.emit('message', {
             text: message,
-            from: 'me',
+            from: userId,
             to: '523511507240',
             type: 'text',
             messageId: messageId,
         });
         msgs({
             text: message,
-            from: 'me',
+            from: userId,
             to: '523511507240',
             type: 'text',
             messageId: messageId
@@ -50,6 +51,10 @@ function Home() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        const session = supabase.auth.getSession().then(data => {
+            setUserId(data.data.session.user.id);
+        })
+
         if (!supabase.auth.getSession()) {
             navigate('/login');
         }
@@ -69,7 +74,7 @@ function Home() {
                     messages.map((message, i) => (
                         <li
                             className={
-                                message.from != 'me' ? "chat-container--message--recieved" : "chat-container--message"}
+                                message.from != userId ? "chat-container--message--recieved" : "chat-container--message"}
                             key={i}><p>{message.text}</p></li>
                     ))
                 }
@@ -91,4 +96,4 @@ function Home() {
     );
 }
 
-export { Home };
+export { Chat };

@@ -1,7 +1,8 @@
 import './App.css'
 import { useState, useEffect } from 'react';
 import { Login } from './pages/Login';
-import { Home } from './pages/Home';
+import { Chat } from './pages/Chat';
+import {Chats} from './pages/Chats';
 import { NotFound } from './pages/NotFound';
 import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import { supabase } from './supabase/client';
@@ -15,7 +16,7 @@ export default function App() {
       if (!session) {
         navigate('/login')
       } else {
-        navigate('/')
+        navigate('/conversations')
       }
     })
   }, [navigate])
@@ -23,8 +24,9 @@ export default function App() {
   return (
     <>
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/conversation' element={<Chat />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/conversations' element={<Chats/>}/>
         <Route path='*' element={<NotFound />} />
 
       </Routes>
