@@ -8,7 +8,7 @@ import './Home.css';
 
 const socket = io("/");
 
-function Chat() {
+function Chat({number}) {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [messageId, setMessageId] = useState('');
@@ -55,10 +55,36 @@ function Chat() {
             setUserId(data.data.session.user.id);
         })
 
+        const conversations =
+            supabase.from('messages')
+                .select('*')
+                .eq('contact_id', number)
+                .then(data => {
+                    data.data.map((msg) => {
+
+                        msgs(
+                            {
+                                text: (msg.content.body ? msg.content.body : msg.content),
+                                from: (
+                                    msg.direction === 'input' ? msg.contact_id : msg.user_id
+                                ),
+                                to: (
+                                    msg.direction === 'output' ? msg.contact_id : msg.user_id
+                                ),
+                                type: msg.type,
+                                messageId: msg.id,
+                            }
+                        )
+                    })
+
+
+                })
+
         if (!supabase.auth.getSession()) {
             navigate('/login');
         }
     }, [navigate])
+
 
     return (
         <div className="main-container">
@@ -76,7 +102,8 @@ function Chat() {
                             className={
                                 message.from != userId ? "chat-container--message--recieved" : "chat-container--message"}
                             key={i}><p>{message.text}</p></li>
-                    ))
+                    )
+                    )
                 }
             </ul>
             <form
