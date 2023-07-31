@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { supabase } from "../supabase/client";
 import io from 'socket.io-client';
 
@@ -8,7 +8,8 @@ import './Home.css';
 
 const socket = io("/");
 
-function Chat({number}) {
+function Chat() {
+    const { slug } = useParams();
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [messageId, setMessageId] = useState('');
@@ -23,14 +24,14 @@ function Chat({number}) {
         socket.emit('message', {
             text: message,
             from: userId,
-            to: '523511507240',
+            to: slug,
             type: 'text',
             messageId: messageId,
         });
         msgs({
             text: message,
             from: userId,
-            to: '523511507240',
+            to: slug,
             type: 'text',
             messageId: messageId
         });
@@ -58,7 +59,7 @@ function Chat({number}) {
         const conversations =
             supabase.from('messages')
                 .select('*')
-                .eq('contact_id', number)
+                .eq('contact_id', slug)
                 .then(data => {
                     data.data.map((msg) => {
 
@@ -88,12 +89,14 @@ function Chat({number}) {
 
     return (
         <div className="main-container">
-            <header>
+            <header className="chat-header-container">
+                <Link
+                    className="chat-header--back"
+                    to={'/conversations'}></Link>
+
+
                 <span className="photo-username"></span>
                 <span className="header-username">Daniel Martínez Cornejo</span>
-                <button
-                    className="header-button--logout"
-                    onClick={() => supabase.auth.signOut()}>Logout</button>
             </header>
             <ul className="chat-container">
                 {

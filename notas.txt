@@ -1,2 +1,5 @@
 agregar un page loader
 
+investgar queries en react router
+    hacer paginacion /conversations/id que el router me lleve chat. Hacer que el prop sea el query
+    hacer un notFound cuando no exista un número.

@@ -15,17 +15,15 @@ export default function App() {
     supabase.auth.onAuthStateChange((event, session) => {
       if (!session) {
         navigate('/login')
-      } else {
-        navigate('/conversations')
-      }
+      } 
     })
   }, [navigate])
 
   return (
     <>
       <Routes>
-        <Route path='/conversation' element={<Chat />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/conversation/:slug' element={<Chat />} />
         <Route path='/conversations' element={<Chats/>}/>
         <Route path='*' element={<NotFound />} />
 

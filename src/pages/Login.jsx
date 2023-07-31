@@ -12,8 +12,8 @@ function Login() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (supabase.auth.getSession()) {
-            navigate('/');
+        if (!supabase.auth.getSession()) {
+            navigate('/login');
         }
     }, [navigate]);
 
@@ -24,7 +24,7 @@ function Login() {
                 email,
                 password,
             })
-
+            navigate('/conversations');
         } catch (error) {
             console.error(error);
         }
