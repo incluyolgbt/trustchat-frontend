@@ -8,8 +8,6 @@ import { Context } from "../../Context";
 
 function Chat() {
     const {
-        messages,
-        msgs,
         userId,
         userName,
         socket,
@@ -17,11 +15,13 @@ function Chat() {
         setUserId
     } = React.useContext(Context);
 
-    console.log(messages);
-
     const { slug } = useParams();
     const [message, setMessage] = useState(''); //aqui
     const [messageId, setMessageId] = useState(''); //aquí
+    const [messages, setMessages] = useState([]);
+    function msgs(msg) { //para que no se reinicie messages cada vez que se le agregue algo
+        setMessages((state) => [msg, ...state]);
+    }
 
     async function handlerSend(e) { //agrega los mensajes que yo envié
         e.preventDefault();
@@ -51,7 +51,6 @@ function Chat() {
 
     //Todas las consultas a base de datos
     var chatTemps = {};
-    var numbers = [];
     useEffect(() => {
         try {
             supabase.from('contacts').select('*').eq('wa_num', slug).then(data => {
@@ -77,24 +76,21 @@ function Chat() {
                             }
                         )
                     })
-
-
                 })
 
             supabase.auth.getSession().then(data => {
-                console.log(data.data.session.user.id)
-                setUserId(data.data.session.user.id); // busca user_id en base de datos
+                setUserId(data.data.session.user.id); // obtener user_id
             })
             
         } catch (error) {
             console.error(error)
         }
 
-    }, [])
+    }, [navigate])
 
     useEffect(() => {
         socket.on('message', msg => { // ese msg será el json recibido
-            msgs(msg);//agrega mensajes recibidos
+            (msg.from === slug ? msgs(msg): '')
             setMessageId(msg.messageId);
         })
 
