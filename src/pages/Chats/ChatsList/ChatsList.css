@@ -1,0 +1,42 @@
+.chat-info{
+    position: relative;
+    padding: 10px;
+    width: 90%;
+    left: 50%;
+    transform: translate(-50%);
+    border-radius: 20px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    border: rgb(90, 90, 90) 1px solid;
+    list-style: none;
+    cursor: pointer;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1rem;
+}
+
+.chat-info--photo{
+    position: absolute;
+    top:50%;
+    transform: translate(0, -50%);
+    width: 12%;
+    height: 80%;
+    border-radius: 50%;
+    background-image: url('https://cdn0.bioenciclopedia.com/es/posts/2/3/0/leon_32_orig.jpg');
+    background-size: 50px 35px;
+    background-position: center;
+}
+
+.chat-info--user{
+    margin-left: 17%;
+    font-size: 1.2rem;
+}
+.chat-info--message{
+    margin-left: 20%;
+    font-size: 1rem;
+}
+
+a:-webkit-any-link {
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+  }

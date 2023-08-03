@@ -1,0 +1,29 @@
+.chat-loading{
+    position: relative;
+    padding: 10px;
+    width: 90%;
+    height: 49px;
+    left: 50%;
+    transform: translate(-50%);
+    border-radius: 20px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    background: linear-gradient(90deg,
+            rgb(97, 97, 97),
+            rgb(56, 56, 56));
+    background-size: 400%, 400%;
+    animation: loadingAnimation 2s ease-in-out infinite;
+
+}
+
+@keyframes loadingAnimation {
+    0%{
+        background-position: 0% 50%;
+    }
+    50%{
+        background-position: 100% 50%;
+    }
+    100%{
+        background-position: 0% 50%;
+    }
+}

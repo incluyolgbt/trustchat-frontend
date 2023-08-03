@@ -6,8 +6,9 @@
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
-    height: auto;
+    height: 12%;
     background-color: rgb(15, 15, 15);
+    margin-bottom: 5px;
 }
 
 .chats{
@@ -52,17 +53,12 @@
 }
 
 .chats-container{
+    position: absolute;
+    display: flex;
+    flex-direction: column-reverse;
     position: relative;
     height: auto;
     width: 100%;
 }
 
-.chat-info{
-    position: relative;
-    padding: 10px;
-    width: 100%;
-    margin-bottom: 5px;
-    background-color: azure;
-    list-style: none;
-    cursor: pointer;
-}
+

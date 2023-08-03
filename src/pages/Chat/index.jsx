@@ -1,25 +1,27 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { supabase } from "../supabase/client";
-import io from 'socket.io-client';
+import { supabase } from "../../supabase/client";
+import './Chat.css';
+import { Context } from "../../Context";
 
-import './Home.css';
-
-const socket = io("/");
 
 function Chat() {
+    const {
+        messages,
+        msgs,
+        userId, 
+        userName,
+        socket
+    } = React.useContext(Context);
+
+    console.log(messages);
+    
     const { slug } = useParams();
-    const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState([]);
-    const [messageId, setMessageId] = useState('');
-    const [userId, setUserId] = useState('');
-
-    function msgs(msg) { //para que no se reinicie messages cada vez que se le agregue algo
-        setMessages((state) => [msg, ...state]);
-    }
-
-    async function handlerSubmit(e) { //agrega los mensajes que yo envié
+    const [message, setMessage] = useState(''); //aqui
+    const [messageId, setMessageId] = useState(''); //aquí
+    
+    async function handlerSend(e) { //agrega los mensajes que yo envié
         e.preventDefault();
         socket.emit('message', {
             text: message,
@@ -38,6 +40,13 @@ function Chat() {
         setMessage('');
     };
 
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (!supabase.auth.getSession()) {
+            navigate('/login');
+        }
+    }, [navigate])
+
     useEffect(() => {
         socket.on('message', msg => { // ese msg será el json recibido
             msgs(msg);//agrega mensajes recibidos
@@ -49,44 +58,6 @@ function Chat() {
         }
     }, []);
 
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        const session = supabase.auth.getSession().then(data => {
-            setUserId(data.data.session.user.id);
-        })
-
-        const conversations =
-            supabase.from('messages')
-                .select('*')
-                .eq('contact_id', slug)
-                .then(data => {
-                    data.data.map((msg) => {
-
-                        msgs(
-                            {
-                                text: (msg.content.body ? msg.content.body : msg.content),
-                                from: (
-                                    msg.direction === 'input' ? msg.contact_id : msg.user_id
-                                ),
-                                to: (
-                                    msg.direction === 'output' ? msg.contact_id : msg.user_id
-                                ),
-                                type: msg.type,
-                                messageId: msg.id,
-                            }
-                        )
-                    })
-
-
-                })
-
-        if (!supabase.auth.getSession()) {
-            navigate('/login');
-        }
-    }, [navigate])
-
-
     return (
         <div className="main-container">
             <header className="chat-header-container">
@@ -96,7 +67,7 @@ function Chat() {
 
 
                 <span className="photo-username"></span>
-                <span className="header-username">Daniel Martínez Cornejo</span>
+                <span className="header-username">{userName}</span>
             </header>
             <ul className="chat-container">
                 {
@@ -118,7 +89,7 @@ function Chat() {
                 <button
                     type="submit"
                     className="type-message--button"
-                    onClick={handlerSubmit}>
+                    onClick={handlerSend}>
                     Send
                 </button>
             </form>

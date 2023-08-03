@@ -1,19 +1,23 @@
 import React from "react";
-import { useEffect, useState } from "react";
-import { supabase } from '../supabase/client';
+import { useEffect, useState, useContext } from "react";
+import { supabase } from "../../supabase/client";
 import { useNavigate } from "react-router-dom";
 import './Login.css'
+import { Context } from "../../Context";
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const { setError, userId, setUserId, socket } = useContext(Context);
 
     const navigate = useNavigate();
 
     useEffect(() => {
         if (!supabase.auth.getSession()) {
             navigate('/login');
+        } else {
+            navigate('/conversations');
+
         }
     }, [navigate]);
 
@@ -24,16 +28,16 @@ function Login() {
                 email,
                 password,
             })
-            navigate('/conversations');
+            setUserId(data.user.id);
         } catch (error) {
-            console.error(error);
+
         }
     }
 
     return (
         <div className="background-login">
             <form className="form-login" onSubmit={handlerSubmit}>
-            <h1>Log in</h1>
+                <h1>Login</h1>
                 <input
                     className="form-login--email"
                     type="email" name="email"
