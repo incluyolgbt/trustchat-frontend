@@ -10,17 +10,19 @@ function Chat() {
     const {
         messages,
         msgs,
-        userId, 
+        userId,
         userName,
-        socket
+        socket,
+        setUserName,
+        setUserId
     } = React.useContext(Context);
 
     console.log(messages);
-    
+
     const { slug } = useParams();
     const [message, setMessage] = useState(''); //aqui
     const [messageId, setMessageId] = useState(''); //aquí
-    
+
     async function handlerSend(e) { //agrega los mensajes que yo envié
         e.preventDefault();
         socket.emit('message', {
@@ -46,6 +48,49 @@ function Chat() {
             navigate('/login');
         }
     }, [navigate])
+
+    //Todas las consultas a base de datos
+    var chatTemps = {};
+    var numbers = [];
+    useEffect(() => {
+        try {
+            supabase.from('contacts').select('*').eq('wa_num', slug).then(data => {
+                setUserName(data.data[0].name)
+            })
+
+            supabase.from('messages') //Busca los mensajes en base de datos
+                .select('*')
+                .eq('contact_id', slug)
+                .then(data => {
+                    data.data.map((msg) => {
+                        msgs(
+                            {
+                                text: (msg.content.body ? msg.content.body : msg.content),
+                                from: (
+                                    msg.direction === 'input' ? msg.contact_id : msg.user_id
+                                ),
+                                to: (
+                                    msg.direction === 'output' ? msg.contact_id : msg.user_id
+                                ),
+                                type: msg.type,
+                                messageId: msg.id,
+                            }
+                        )
+                    })
+
+
+                })
+
+            supabase.auth.getSession().then(data => {
+                console.log(data.data.session.user.id)
+                setUserId(data.data.session.user.id); // busca user_id en base de datos
+            })
+            
+        } catch (error) {
+            console.error(error)
+        }
+
+    }, [])
 
     useEffect(() => {
         socket.on('message', msg => { // ese msg será el json recibido

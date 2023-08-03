@@ -29,6 +29,7 @@ function Login() {
                 password,
             })
             setUserId(data.user.id);
+            navigate('/conversations');
         } catch (error) {
 
         }

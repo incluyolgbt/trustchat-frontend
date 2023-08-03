@@ -11,8 +11,11 @@ function Chats() {
     const {
         chats,
         setSearch,
+        chts,
+        setUserId
     } = React.useContext(Context); 
     const navigate = useNavigate();
+    
     useEffect(() => {
         if (!supabase.auth.getSession()) {
             navigate('/login');
@@ -20,6 +23,35 @@ function Chats() {
             navigate('/conversations');
         }
     }, [navigate])
+
+    //Todas las consultas a base de datos
+    var chatTemps = {};
+    var numbers = [];
+    useEffect(() => {
+        try {
+            supabase.from('messages') //consulto por todos los mensajes y guardo solo el último  
+                .select('*')
+                .then(data => {
+                    data.data.map((msg) => {
+                        const temp = msg.contact_id;
+                        chatTemps[temp] = {
+                            text: (msg.content.body ? msg.content.body : msg.content),
+                            direction: msg.direction
+                        };
+                    })
+                    numbers = Object.keys(chatTemps);
+                    console.log(numbers);
+                    chts(chatTemps)
+                })
+        } catch (error) {
+            console.error(error)
+        }
+
+        supabase.auth.getSession().then(data => {
+            setUserId(data.data.session.user.id); // busca user_id en base de datos
+        })
+        
+    }, [])
 
     return (
         <>
