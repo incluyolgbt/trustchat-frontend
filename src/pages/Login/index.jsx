@@ -8,7 +8,7 @@ import { Context } from "../../Context";
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { setError, userId, setUserId, socket } = useContext(Context);
+    const { socket } = useContext(Context);
 
     const navigate = useNavigate();
 
@@ -28,7 +28,11 @@ function Login() {
                 email,
                 password,
             })
-            setUserId(data.user.id);
+
+            socket.emit('authenticate', {
+                'user_id': data.user.id
+            })
+
             navigate('/conversations');
         } catch (error) {
 

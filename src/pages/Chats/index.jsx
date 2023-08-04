@@ -15,7 +15,7 @@ function Chats() {
     }
 
     const navigate = useNavigate();
-    
+
     useEffect(() => {
         if (!supabase.auth.getSession()) {
             navigate('/login');
@@ -42,15 +42,14 @@ function Chats() {
         } catch (error) {
             console.error(error)
         }
-        
+
     }, [navigate])
 
     return (
         <>
             <header className="chats-header--container">
-                <h1 className="chats">Chats</h1>
                 <div className="chat-header--container--options">
-                    <input type="text" className="header-search--chats" />
+                    <h1 className="chats">Chats</h1>
                     <button
                         className="header-button--logout"
                         onClick={() => supabase.auth.signOut()}>Log out</button>

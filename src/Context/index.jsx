@@ -13,8 +13,6 @@ function ContextProvider({ children }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
-
-    
     return (
         <Context.Provider value={{
             userId,

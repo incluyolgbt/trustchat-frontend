@@ -80,17 +80,23 @@ function Chat() {
 
             supabase.auth.getSession().then(data => {
                 setUserId(data.data.session.user.id); // obtener user_id
+                socket.emit('authenticate', {
+                    'user_id': data.data.session.user.id
+                })
             })
-            
+
+
+
         } catch (error) {
             console.error(error)
         }
 
-    }, [navigate])
+    }, [])
 
     useEffect(() => {
+
         socket.on('message', msg => { // ese msg será el json recibido
-            (msg.from === slug ? msgs(msg): '')
+            (msg.from === slug ? msgs(msg) : '')
             setMessageId(msg.messageId);
         })
 

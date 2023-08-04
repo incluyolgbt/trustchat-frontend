@@ -11,34 +11,8 @@ manejo de process.env
 
 agregar icono de left arrow
 
-quizá usar local storage para agilizar una vez logueado
-    borrar al cerrar sesión
-
-funcionalidad de buscar chat 
-
 Agregar imágenes predeterminadas de caricaturas para porfile photos 
 
-hacer un loading page después del login para que se hagan todas las peticiones 
-guardar en contexto
-    el contexto se actualiza con los sockets 
-    cambiar la lógica de chats y chat 
-    pedir a base de datos nombre de usuarie para mostrar en chats
+Nombres de personas en chats
 
-    no funciono lo del contexto, así que debo pensar una nueva forma de llamar datos desde el inicio 
-
-    dos opciones: 
-    hacer consulta con backend usando el user_id
-    recibir estrucura similar a la de abajo una vez se cree la conexión 
-    
-    
-    seguir con la misma lógica, pero que se haga en loading page
-    se guarde en estrucutura externa tipo: 
-
-    {wa_id: [
-        {text:lksdjfkldjf
-        from:_jldkfñlksajf
-        direction: fajsdñkljfsdkl}
-    ], 
-    wa_id2: ....}
-
-    y que cada chat consulte esa estrucutura. 
+Responsive design 
