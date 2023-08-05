@@ -1,9 +1,7 @@
+import { createClient } from '@supabase/supabase-js'; 
 
-import { createClient } from '@supabase/supabase-js';
-
-const SUPABASE_URL = '';
-const algo = '';
-
-const supabase = createClient(SUPABASE_URL, algo);
+const supabase = createClient(
+    import.meta.env.VITE_SUPABASE_URL, 
+    import.meta.env.VITE_TOKEN);
 
 export { supabase };
