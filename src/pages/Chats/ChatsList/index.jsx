@@ -12,7 +12,7 @@ function ChatsList({ c }) {
                 key={i}>
                 <Link to={`/conversation/${chat}`}>
                     <span className="chat-info--photo"></span>
-                    <h2 className="chat-info--user">{chat}</h2>
+                    <h2 className="chat-info--user">{c[chat].name}</h2>
                     <p className="chat-info--message">{
                                             `${c[chat].direction === 'output' ? 'Tú: ' : ''}` +
                                             c[chat].text}</p>

@@ -2,16 +2,15 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { supabase } from "../../supabase/client";
-import './Chat.css';
 import { Context } from "../../Context";
+import {FaAngleLeft} from '@react-icons/all-files/fa/FaAngleLeft';
+import './Chat.css';
 
 
 function Chat() {
     const {
         userId,
-        userName,
         socket,
-        setUserName,
         setUserId
     } = React.useContext(Context);
 
@@ -19,6 +18,7 @@ function Chat() {
     const [message, setMessage] = useState(''); //aqui
     const [messageId, setMessageId] = useState(''); //aquí
     const [messages, setMessages] = useState([]);
+    const [userName, setUserName] = useState('');
     function msgs(msg) { //para que no se reinicie messages cada vez que se le agregue algo
         setMessages((state) => [msg, ...state]);
     }
@@ -53,14 +53,20 @@ function Chat() {
     var chatTemps = {};
     useEffect(() => {
         try {
-            supabase.from('contacts').select('*').eq('wa_num', slug).then(data => {
-                setUserName(data.data[0].name)
-            })
+            // supabase.from('contacts').select('*').eq('wa_num', slug).then(data => {
+            //     setUserName(data.data[0].name)
+            // })
 
             supabase.from('messages') //Busca los mensajes en base de datos
-                .select('*')
+                .select(`
+                *, 
+                contacts (name
+                    )
+                `)
                 .eq('contact_id', slug)
                 .then(data => {
+                    if (data.data.length === 0) return navigate('/notfound');
+                    setUserName(data.data[0].contacts.name)
                     data.data.map((msg) => {
                         msgs(
                             {
@@ -110,7 +116,9 @@ function Chat() {
             <header className="chat-header-container">
                 <Link
                     className="chat-header--back"
-                    to={'/conversations'}></Link>
+                    to={'/conversations'}>
+                    <FaAngleLeft className="chat-header--bacl--arrow"/>
+                </Link>
 
 
                 <span className="photo-username"></span>
