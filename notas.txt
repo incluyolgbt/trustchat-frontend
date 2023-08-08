@@ -1,18 +1,10 @@
-agregar un loading animation después de login para cargar en contextos 
-
-investgar queries en react router
-    hacer paginacion /conversations/id que el router me lleve chat. Hacer que el prop sea el query
-    hacer un notFound cuando no exista un número.
-    Hacer una página de not found para / no existentes y números no existentes
-
 refactorizar componentes
-
-manejo de process.env
-
-agregar icono de left arrow
 
 Agregar imágenes predeterminadas de caricaturas para porfile photos 
 
-Nombres de personas en chats
-
 Responsive design 
+
+se ve pequeño en navegador del celular
+y el teclado estorba en escritura 
+
+usar https://avatars.oxro.io/ para las photos

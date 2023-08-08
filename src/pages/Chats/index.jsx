@@ -28,11 +28,16 @@ function Chats() {
     useEffect(() => {
         try {
             supabase.from('messages') //consulto por todos los mensajes y guardo solo el último  
-                .select('*')
+                .select(`
+                *, 
+                contacts (name
+                    )
+                `)
                 .then(data => {
                     data.data.map((msg) => {
                         const temp = msg.contact_id;
                         chatTemps[temp] = {
+                            name: msg.contacts.name,
                             text: (msg.content.body ? msg.content.body : msg.content),
                             direction: msg.direction
                         };

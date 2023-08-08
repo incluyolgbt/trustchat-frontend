@@ -29,6 +29,7 @@ export default function App() {
         <Route path='/loading' element={<Loading />} />
         <Route path='/conversation/:slug' element={<Chat />} />
         <Route path='/conversations' element={<Chats />} />
+        <Route path='/notfound' element={<NotFound />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </>

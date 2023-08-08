@@ -1,17 +1,34 @@
-## Running React on Repl.it
+## Chat UI client
+This web application is created in collaboration with the social entrepreneurship [Incluyo](https://incluyo.lgbt "Incluyo") to achieve a system of attention to LGBTQ+ people in a direct way in which their privacy is prioritized.
 
-[React](https://reactjs.org/) is a popular JavaScript library for building user interfaces.
+This web application was created with React and VITE. It uses HTTP requests for user authentication through Supabase Auth System. It also communicates with the Supabase database to show the messages sent and received from the different chats. 
 
-[Vite](https://vitejs.dev/) is a blazing fast frontend build tool that includes features like Hot Module Reloading (HMR), optimized builds, and TypeScript support out of the box.
+For real-time communication it uses websockets (socket.io) that communicates with the web server ([shown in this repository](https://github.com/danieldamaco/trustchat-backend "shown in this repository")), so that it processes the messages received and sent. 
 
-Using the two in conjunction is one of the fastest ways to build a web app.
+## Instalation.
+### Requierements.
+- Node: v18.17.0 
 
-### Getting Started
-- Hit run
-- Edit [App.jsx](#src/App.jsx) and watch it live update!
+### Instalation of dependencies.
+with npm:
+```bash
+npm install
+```
+### Setting environment variables.
+In order to have access it is required to create or ask for document `.env` with four varibales:
 
-By default, Replit runs the `dev` script, but you can configure it by changing the `run` field in the [configuration file](#.replit). Here are the vite docs for [serving production websites](https://vitejs.dev/guide/build.html)
+- VITE_SUPABASE_URL: The url of supabase database.
+- VITE_TOKEN: Token provided by supabase.
 
-### Typescript
+## Execution 
+Once all the dependencies are installed, the web server would execute locally wiht:
+```bash
+npm run dev
+```
+You will know that everything is running correctly when the console displays:   
 
-Just rename any file from `.jsx` to `.tsx`. You can also try our [TypeScript Template](https://replit.com/@replit/React-TypeScript)
+VITE [version]
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://{YOUR-LOCAL-IP}:5173/
+  ➜  press h to show help
+

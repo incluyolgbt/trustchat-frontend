@@ -14,17 +14,28 @@ body{
 }
 
 .chat-header--back{
-    width: 10px;
-    height: 10px;
-    background-color: darkturquoise;
-    margin-left: 15px;
+    position: relative;
+    width: 30px;
+    height: 30px;
+    margin-left: 5px;
+}
+
+.chat-header--bacl--arrow{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    fill:#5eacff;
+    
 }
 
 .photo-username {
     width: 35px;
     height: 35px;
     border-radius: 50%;
-    margin-left: 15px;
+    margin-left: 5px;
     background-image: url('https://cdn0.bioenciclopedia.com/es/posts/2/3/0/leon_32_orig.jpg');
     background-size: 50px 35px;
     background-position: center;
