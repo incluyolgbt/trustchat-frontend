@@ -14,24 +14,21 @@
     font-size: 1rem;
 }
 
-.chat-info--photo{
+.chat-info--photo--chatList{
     position: absolute;
     top:50%;
-    transform: translate(0, -50%);
+    margin-left: 6%;
+    transform: translate(-50%, -50%);
     width: 12%;
     height: 80%;
-    border-radius: 50%;
-    background-image: url('https://cdn0.bioenciclopedia.com/es/posts/2/3/0/leon_32_orig.jpg');
-    background-size: 50px 35px;
-    background-position: center;
 }
 
 .chat-info--user{
-    margin-left: 17%;
+    margin-left: 15%;
     font-size: 1.2rem;
 }
 .chat-info--message{
-    margin-left: 20%;
+    margin-left: 17%;
     font-size: 1rem;
 }
 
