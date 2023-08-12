@@ -3,7 +3,11 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { supabase } from "../../supabase/client";
 import { Context } from "../../Context";
+import { ProfilePhoto } from "../../Components/ProfilePhoto";
 import {FaAngleLeft} from '@react-icons/all-files/fa/FaAngleLeft';
+import { PopUp } from "../../modals/PopUp";
+import { ConnectionLost } from "../../Components/ConnectionLost";
+import { OnLine } from "../../CustomHooks/OnLine";
 import './Chat.css';
 
 
@@ -13,6 +17,8 @@ function Chat() {
         socket,
         setUserId
     } = React.useContext(Context);
+
+    const {isOnline} = OnLine();
 
     const { slug } = useParams();
     const [message, setMessage] = useState(''); //aqui
@@ -121,7 +127,9 @@ function Chat() {
                 </Link>
 
 
-                <span className="photo-username"></span>
+                <ProfilePhoto 
+                name={userName}
+                type={"chat-info--photo--chat"}/>
                 <span className="header-username">{userName}</span>
             </header>
             <ul className="chat-container">
@@ -148,6 +156,12 @@ function Chat() {
                     Send
                 </button>
             </form>
+
+            {(isOnline ? null :
+                <PopUp>
+                    <ConnectionLost/>
+                </PopUp>)}
+
         </div>
     );
 }

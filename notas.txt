@@ -1,10 +1,9 @@
-refactorizar componentes
-
-Agregar imágenes predeterminadas de caricaturas para porfile photos 
-
 Responsive design 
 
-se ve pequeño en navegador del celular
-y el teclado estorba en escritura 
+posibles errores
+no hay conexión con el servidor (reviar el ok o 200 tanto de sockets como de db)
+    redirigiar a página de falla interna 
 
-usar https://avatars.oxro.io/ para las photos
+se ve pequeño en navegador del celular
+con el teclado se hace pequeño el espacio par escritura
+y el teclado estorba en escritura 

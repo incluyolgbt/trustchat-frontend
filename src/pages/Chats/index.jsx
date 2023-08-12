@@ -5,9 +5,14 @@ import { supabase } from "../../supabase/client";
 import { ChatsList } from "./ChatsList";
 import './Chats.css'
 import { Context } from "../../Context";
+import { PopUp } from "../../modals/PopUp";
+import { OnLine } from "../../CustomHooks/OnLine";
+import { ConnectionLost } from "../../Components/ConnectionLost";
 
 
 function Chats() {
+
+    const { isOnline } = OnLine();
 
     const [chats, setChats] = useState([]);
     function chts(cht) {
@@ -71,6 +76,11 @@ function Chats() {
                     ))
                 }
             </ul>
+
+            {(isOnline ? null :
+                <PopUp>
+                    <ConnectionLost/>
+                </PopUp>)}
 
         </>
 
