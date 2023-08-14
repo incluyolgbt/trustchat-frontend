@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-function OnLine() {
+function useOnLine() {
     // Online state
     const [isOnline, setIsOnline] = useState(navigator.onLine);
 
@@ -28,4 +28,4 @@ function OnLine() {
     }
 }
 
-export { OnLine };
+export { useOnLine };

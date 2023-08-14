@@ -3,16 +3,13 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "../../supabase/client";
 import { ChatsList } from "./ChatsList";
-import './Chats.css'
-import { Context } from "../../Context";
 import { PopUp } from "../../modals/PopUp";
-import { OnLine } from "../../CustomHooks/OnLine";
+import { useOnLine } from "../../Hooks/useOnLine";
 import { ConnectionLost } from "../../Components/ConnectionLost";
-
+import './Chats.css';
 
 function Chats() {
-
-    const { isOnline } = OnLine();
+    const { isOnline } = useOnLine();
 
     const [chats, setChats] = useState([]);
     function chts(cht) {
@@ -72,7 +69,6 @@ function Chats() {
                         <ChatsList
                             key={i}
                             c={c} />
-
                     ))
                 }
             </ul>
@@ -81,7 +77,6 @@ function Chats() {
                 <PopUp>
                     <ConnectionLost/>
                 </PopUp>)}
-
         </>
 
     );

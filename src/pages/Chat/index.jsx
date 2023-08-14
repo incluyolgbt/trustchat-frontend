@@ -7,8 +7,9 @@ import { ProfilePhoto } from "../../Components/ProfilePhoto";
 import {FaAngleLeft} from '@react-icons/all-files/fa/FaAngleLeft';
 import { PopUp } from "../../modals/PopUp";
 import { ConnectionLost } from "../../Components/ConnectionLost";
-import { OnLine } from "../../CustomHooks/OnLine";
+import { useOnLine } from "../../Hooks/useOnLine";
 import './Chat.css';
+import { Notification } from "./Notification";
 
 
 function Chat() {
@@ -18,13 +19,15 @@ function Chat() {
         setUserId
     } = React.useContext(Context);
 
-    const {isOnline} = OnLine();
+    const {isOnline} = useOnLine();
 
     const { slug } = useParams();
     const [message, setMessage] = useState(''); //aqui
     const [messageId, setMessageId] = useState(''); //aquí
     const [messages, setMessages] = useState([]);
     const [userName, setUserName] = useState('');
+    const [notification, setNotification] = useState(null);
+
     function msgs(msg) { //para que no se reinicie messages cada vez que se le agregue algo
         setMessages((state) => [msg, ...state]);
     }
@@ -103,12 +106,12 @@ function Chat() {
             console.error(error)
         }
 
-    }, [])
+    }, [navigate])
 
     useEffect(() => {
 
         socket.on('message', msg => { // ese msg será el json recibido
-            (msg.from === slug ? msgs(msg) : '')
+            (msg.from === slug ? msgs(msg): setNotification(msg)) //Aquí abrir vaul 
             setMessageId(msg.messageId);
         })
 
@@ -119,6 +122,7 @@ function Chat() {
 
     return (
         <div className="main-container">
+            {(notification && <Notification chat={notification}/>)}
             <header className="chat-header-container">
                 <Link
                     className="chat-header--back"
