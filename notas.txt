@@ -1,9 +1,9 @@
-Responsive design 
-
 posibles errores
 no hay conexión con el servidor (reviar el ok o 200 tanto de sockets como de db)
     redirigiar a página de falla interna 
 
-se ve pequeño en navegador del celular
-con el teclado se hace pequeño el espacio par escritura
-y el teclado estorba en escritura 
+notificaciones en chats de nuevo mensaje
+
+página de bienvenida en desktop
+
+corregir header y type message components de phone UI

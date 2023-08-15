@@ -18,10 +18,11 @@ function Chat() {
         socket,
         setUserId
     } = React.useContext(Context);
+    
 
     const {isOnline} = useOnLine();
-
-    const { slug } = useParams();
+    let idTimeOut;
+    let { slug } = useParams();
     const [message, setMessage] = useState(''); //aqui
     const [messageId, setMessageId] = useState(''); //aquí
     const [messages, setMessages] = useState([]);
@@ -62,9 +63,6 @@ function Chat() {
     var chatTemps = {};
     useEffect(() => {
         try {
-            // supabase.from('contacts').select('*').eq('wa_num', slug).then(data => {
-            //     setUserName(data.data[0].name)
-            // })
 
             supabase.from('messages') //Busca los mensajes en base de datos
                 .select(`
@@ -100,19 +98,25 @@ function Chat() {
                 })
             })
 
-
-
         } catch (error) {
             console.error(error)
         }
 
-    }, [navigate])
+    }, [])
 
     useEffect(() => {
 
         socket.on('message', msg => { // ese msg será el json recibido
-            (msg.from === slug ? msgs(msg): setNotification(msg)) //Aquí abrir vaul 
-            setMessageId(msg.messageId);
+            if(msg.from === slug){
+                msgs(msg);
+                setMessageId(msg.messageId);
+            } else {
+                clearTimeout(idTimeOut);
+                setNotification(msg);
+                idTimeOut = setTimeout(()=>{
+                    setNotification(null);
+                }, 5000);
+            }
         })
 
         return () => {

@@ -12,6 +12,7 @@
     cursor: pointer;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1rem;
+    color: white;
 }
 
 .chat-info--photo--chatList{

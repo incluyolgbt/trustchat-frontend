@@ -5,12 +5,10 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../../../supabase/client';
 
 function Notification({ chat }) {
-    const [visibility, setVisibility] = useState('')
-
     const [userName, setUserName] = useState('');
 
-    const notificationHandler = ()=> {
-        setVisibility('none')
+    const renderAgain = () => {
+        ReactDOM.render()
     }
 
     useEffect(() => {
@@ -26,21 +24,14 @@ function Notification({ chat }) {
         name();
     }, []);
 
-    // NECESITO HACER UN TOGGLE PARA QUE NO SE DESAPAREZCA PARA SIEMPRE
-    
-    useEffect(()=>{
-        setTimeout(()=>{
-            notificationHandler();
-        }, 10000) // 5 seg
-    }, [userName])
-
     return (
-        <div 
-        className={`notification-container ${visibility}`}
-        onClick={notificationHandler}>
-            <Link 
-            className='notification-container--link'
-            to={`/conversation/${chat.from}`}>
+        <div
+            className="notification-container ">
+            <Link
+                className='notification-container--link'
+                to={`/conversation/${chat.from}`}
+                onClick={renderAgain}
+            >
                 <ProfilePhoto name={userName} type={"notification-photo"} />
                 <div className='notification-user--info'>
                     <h2 className="notification-user">{userName}</h2>
