@@ -1,7 +1,6 @@
 import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import { supabase } from '../supabase/client';
-import React, { useState, useEffect } from 'react'
-import { ContextProvider } from './context';
+import React, { useState, useEffect } from 'react';
 import { Login } from '../pages/Login';
 import { NotFound } from '../pages/NotFound';
 import { Dashboard } from './Dashboard';
@@ -18,7 +17,6 @@ function Desktop() {
     }, [navigate])
 
     return (
-        <ContextProvider>
             <Routes>
                 <Route path='/' element={<Login />} />
                 <Route path='/login' element={<Login />} />
@@ -26,7 +24,6 @@ function Desktop() {
                 <Route path='/notfound' element={<NotFound />} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
-        </ContextProvider>
     )
 }
 

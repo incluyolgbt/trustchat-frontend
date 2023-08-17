@@ -4,22 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { ProfilePhoto } from '../../../Components/ProfilePhoto'
 import { PopUp } from '../../../modals/PopUp'
 import { ConnectionLost } from '../../../Components/ConnectionLost'
-import { useOnLine } from '../../../Hooks/useOnLine'
-import { io } from 'socket.io-client';
+import { useOnLine } from '../../../Hooks/useOnLine';
 import './chat.css'
 import { Context } from '../../context';
 import { Welcome } from '../Welcome';
-
-const socket = io("/");
 export default function Chat() {
 
-    const { num } = React.useContext(Context);
+    const { num, userId, connection, socket } = React.useContext(Context);
     const { isOnline } = useOnLine();
     const [message, setMessage] = useState(''); //aqui
     const [messageId, setMessageId] = useState(''); //aquí
     const [messages, setMessages] = useState([]);
     const [userName, setUserName] = useState('');
-    const [userId, setUserId] = useState('')
 
     function msgs(msg) { //para que no se reinicie messages cada vez que se le agregue algo
         setMessages((state) => [msg, ...state]);
@@ -27,6 +23,7 @@ export default function Chat() {
 
     async function handlerSend(e) { //agrega los mensajes que yo envié
         e.preventDefault();
+        console.log(socket.id)
         socket.emit('message', {
             text: message,
             from: userId,
@@ -83,15 +80,15 @@ export default function Chat() {
                     })
                 })
 
-            //quizá este no va aquí y quizá es un manejador de eventos y no un effect
-            //creo que sería con dependencias []
-                console.log('Efecto mando auth por socket')
-                supabase.auth.getSession().then(data => {
-                setUserId(data.data.session.user.id); // obtener user_id
-                socket.emit('authenticate', {
-                    'user_id': data.data.session.user.id
-                })
-            })
+            // //quizá este no va aquí y quizá es un manejador de eventos y no un effect
+            // //creo que sería con dependencias []
+            // console.log('Efecto mando auth por socket')
+            // supabase.auth.getSession().then(data => {
+            //     setUserId(data.data.session.user.id); // obtener user_id
+            //     socket.emit('authenticate', {
+            //         'user_id': data.data.session.user.id
+            //     })
+            // })
 
         } catch (error) {
             console.error(error)
