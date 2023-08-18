@@ -117,34 +117,34 @@ function Chat() {
     return (
 
         (num ?
-            <div className="main-container">
-                <header className="chat-header-container">
+            <div className="desktop-main-container">
+                <header className="desktop-chat-header-container">
 
                     <ProfilePhoto
                         name={userName}
-                        type={"chat-info--photo--chat"} />
-                    <span className="header-username">{userName}</span>
+                        type={"desktop-chat-info--photo--chat"} />
+                    <span className="desktop-header-username">{userName}</span>
                 </header>
-                <ul className="chat-container">
+                <ul className="desktop-chat-container">
                     {
                         messages.map((message, i) => (
                             <li
                                 className={
-                                    message.from != userId ? "chat-container--message--recieved" : "chat-container--message"}
+                                    message.from != userId ? "desktop-chat-container--message--recieved" : "desktop-chat-container--message"}
                                 key={i}><p>{message.text}</p></li>
                         )
                         )
                     }
                 </ul>
                 <form
-                    className="type-message">
+                    className="desktop-type-message">
                     <input
                         value={message}
-                        className="type-message-editor"
+                        className="desktop-type-message-editor"
                         type='text' onChange={(e) => setMessage(e.target.value)} />
                     <button
                         type="submit"
-                        className="type-message--button"
+                        className="desktop-type-message--button"
                         onClick={handlerSend}>
                         Send
                     </button>

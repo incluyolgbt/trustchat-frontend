@@ -1,4 +1,4 @@
-.chats-header--container {
+.desktop-chats-header--container {
     position: sticky;
     top: 0;
     left: 0;
@@ -12,7 +12,7 @@
     margin-bottom: 5px;
 }
 
-.chats{
+.desktop-chats{
     position: relative;
     left: 10px;
     top: 5px;
@@ -23,7 +23,7 @@
     margin-bottom: 10px;
 }
 
-.chat-header--container--options{
+.desktop-chat-header--container--options{
     display: flex;
     flex-direction: row;
     justify-content:space-between;
@@ -31,7 +31,7 @@
     width: 100%;
 }
 
-.header-button--logout {
+.desktop-header-button--logout {
     position: relative;
     right: 10px;
     border: none;
@@ -42,7 +42,7 @@
     color: white;
 }
 
-.chats-container{
+.desktop-chats-container{
     position: absolute;
     display: flex;
     flex-direction: column-reverse;

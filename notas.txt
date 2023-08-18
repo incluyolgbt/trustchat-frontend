@@ -8,7 +8,7 @@ agregar undicador visual de notificación Desktop UI (bolitas como en WA)
 
 página de bienvenida en desktop
 
-corregir header y type message components de phone UI
+YAAAA: corregir header y type message components de phone UI
 
 link unico para cada chat en Desktop
 

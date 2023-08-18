@@ -13,17 +13,17 @@ function Chats() {
     const { isOnline } = useOnLine();
     const { socket } = useContext(Context);
     const [chats, setChats] = useState([]);
+
     function chts(cht) {
         setChats((state) => [...state, cht]);
     }
 
-
     useEffect(() => {
 
-        if(chats.length !== 0){
+        if (chats.length !== 0) {
             const algo = (msg) => {
                 const newChats = [...chats] //sobreescribir chats con el nuevo mensaje
-                newChats[0][msg.from] = {...newChats[0][msg.from], text: msg.text, direction: 'input'}
+                newChats[0][msg.from] = { ...newChats[0][msg.from], text: msg.text, direction: 'input' }
                 setChats(newChats);
             };
 
@@ -70,16 +70,16 @@ function Chats() {
     return (
         (isOnline ?
             <>
-                <header className="chats-header--container">
-                    <div className="chat-header--container--options">
-                        <h1 className="chats">Chats</h1>
+                <header className="desktop-chats-header--container">
+                    <div className="desktop-chat-header--container--options">
+                        <h1 className="desktop-chats">Chats</h1>
                         <button
-                            className="header-button--logout"
+                            className="desktop-header-button--logout"
                             onClick={() => supabase.auth.signOut()}>Log out</button>
                     </div>
                 </header>
 
-                <ul className="chats-container">
+                <ul className="desktop-chats-container">
                     {
                         chats.map((c, i) => (
                             <ChatsList

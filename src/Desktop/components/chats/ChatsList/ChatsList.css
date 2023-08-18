@@ -1,4 +1,4 @@
-.chat-info{
+.desktop-chat-info{
     position: relative;
     padding: 10px;
     width: 90%;
@@ -15,7 +15,7 @@
     color: white;
 }
 
-.chat-info--photo--chatList{
+.desktop-chat-info--photo--chatList{
     position: absolute;
     top:50%;
     margin-left: 20px;
@@ -24,11 +24,11 @@
     height: 38px;
 }
 
-.chat-info--user{
+.desktop-chat-info--user{
     margin-left: 50px;
     font-size: 1.2rem;
 }
-.chat-info--message{
+.desktop-chat-info--message{
     margin-left: 60px;
     font-size: 1rem;
 }
