@@ -1,11 +1,11 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { supabase } from "../../supabase/client";
+import { supabase } from "../../../supabase/client";
 import { ChatsList } from "./ChatsList";
-import { PopUp } from "../../modals/PopUp";
-import { useOnLine } from "../../Hooks/useOnLine";
-import { ConnectionLost } from "../../Components/ConnectionLost";
+import { PopUp } from "../../../modals/PopUp";
+import { useOnLine } from "../../../Hooks/useOnLine";
+import { ConnectionLost } from "../../../Components/ConnectionLost";
 import './Chats.css';
 
 function Chats() {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { supabase } from '../../../supabase/client';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { PopUp } from '../../../modals/PopUp';
 import { ConnectionLost } from '../../../Components/ConnectionLost';
 import { useOnLine } from '../../../Hooks/useOnLine';
@@ -13,6 +13,8 @@ function Chats() {
     const { isOnline } = useOnLine();
     const { socket } = useContext(Context);
     const [chats, setChats] = useState([]);
+
+    const location = useLocation();
 
     function chts(cht) {
         setChats((state) => [...state, cht]);
@@ -37,7 +39,7 @@ function Chats() {
         if (!supabase.auth.getSession()) {
             navigate('/login');
         } else {
-            navigate('/conversations');
+            navigate(location.pathname);
         }
     }, [navigate])
 
@@ -65,7 +67,7 @@ function Chats() {
             console.error(error)
         }
 
-    }, [navigate])
+    }, [])
 
     return (
         (isOnline ?

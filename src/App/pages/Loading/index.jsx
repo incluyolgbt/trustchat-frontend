@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
-import { supabase } from '../../supabase/client';
+import { supabase } from '../../../supabase/client';
 import { useNavigate } from 'react-router-dom';
-import { Context } from '../../Context';
+import { Context } from '../../../Context';
 import './ChatsLoading.css'
 
 //Aquí se hacen consultas a backend y se espera que mande información

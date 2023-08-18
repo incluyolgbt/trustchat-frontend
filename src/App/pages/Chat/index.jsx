@@ -1,13 +1,13 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { supabase } from "../../supabase/client";
-import { Context } from "../../Context";
-import { ProfilePhoto } from "../../Components/ProfilePhoto";
+import { supabase } from "../../../supabase/client";
+import { Context } from "../../../Context";
+import { ProfilePhoto } from "../../../Components/ProfilePhoto";
 import {FaAngleLeft} from '@react-icons/all-files/fa/FaAngleLeft';
-import { PopUp } from "../../modals/PopUp";
-import { ConnectionLost } from "../../Components/ConnectionLost";
-import { useOnLine } from "../../Hooks/useOnLine";
+import { PopUp } from "../../../modals/PopUp";
+import { ConnectionLost } from "../../../Components/ConnectionLost";
+import { useOnLine } from "../../../Hooks/useOnLine";
 import './Chat.css';
 import { Notification } from "./Notification";
 

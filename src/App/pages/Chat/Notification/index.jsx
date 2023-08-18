@@ -1,8 +1,8 @@
 import './Notification.css'
 import { Link } from 'react-router-dom';
-import { ProfilePhoto } from '../../../Components/ProfilePhoto';
+import { ProfilePhoto } from '../../../../Components/ProfilePhoto';
 import { useEffect, useState } from 'react';
-import { supabase } from '../../../supabase/client';
+import { supabase } from '../../../../supabase/client';
 
 function Notification({ chat }) {
     const [userName, setUserName] = useState('');
@@ -29,7 +29,7 @@ function Notification({ chat }) {
             className="notification-container ">
             <Link
                 className='notification-container--link'
-                to={`/conversation/${chat.from}`}
+                to={`/conversations/${chat.from}`}
                 onClick={renderAgain}
             >
                 <ProfilePhoto name={userName} type={"notification-photo"} />

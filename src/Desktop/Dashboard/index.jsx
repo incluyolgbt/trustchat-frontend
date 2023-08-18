@@ -4,6 +4,7 @@ import { Chat } from '../components/chat';
 import { supabase } from '../../supabase/client';
 import './Dashboard.css'
 import { ContextProvider } from '../context';
+import { Outlet } from 'react-router-dom';
 
 function Dashboard() {
     return (
@@ -13,7 +14,7 @@ function Dashboard() {
                     <Chats />
                 </section>
                 <section className='dashboard-chat'>
-                    <Chat />
+                    <Outlet/>
                 </section>
             </main>
         </ContextProvider>

@@ -2,17 +2,37 @@ posibles errores
 no hay conexión con el servidor (reviar el ok o 200 tanto de sockets como de db)
     redirigiar a página de falla interna 
 
-YAAA: notificaciones en chats de nuevo mensaje
+notificaciones en chats de nuevo mensaje    
+    agregar indicador visual de notificación Desktop UI y Phone UI(bolitas como en WA)
 
-agregar undicador visual de notificación Desktop UI (bolitas como en WA)
-
-página de bienvenida en desktop
-
-YAAAA: corregir header y type message components de phone UI
-
-link unico para cada chat en Desktop
+página de bienvenida en desktop diseño
 
 que el manager vea todos los chats y asignarlas con un menú click derecho 
     que sea la misma app pero con diferentes componentes
 
-checar porqué crashó después de picar en notificacines phone UI
+Página de managers
+Error al hacer click en notificaciones popup en phone pages->chat->notification
+página de bienvenida 
+notificaciones chats Desktop 
+notificaciones chats Phone
+En url colocar id del contacto y no su número
+
+distancia left y right de message container no están iguales
+botón send no está centrado en el espacio en chats Desktop
+botón send no está centrado en el espacio en chats phone
+
+
+Errores a señalar a usiarie:
+    mensaje no enviado (no recibir ok de socket)
+    no permitir enviar mensajes vacios 
+    password incorrecto 
+    cuando a accedo a número por url conversations/{número incorrecto o inválido} no me redirecciona a página no enconrada en Desktop
+
+
+diseño
+temas oscuro y claro
+
+recibir mensajes de voz
+fotos
+stickers
+documentos

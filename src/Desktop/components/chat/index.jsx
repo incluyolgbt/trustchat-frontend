@@ -5,13 +5,13 @@ import { ProfilePhoto } from '../../../Components/ProfilePhoto'
 import { PopUp } from '../../../modals/PopUp'
 import { ConnectionLost } from '../../../Components/ConnectionLost'
 import { useOnLine } from '../../../Hooks/useOnLine';
-import './chat.css'
 import { Context } from '../../context';
-import { Welcome } from '../Welcome';
+import './chat.css'
 
 function Chat() {
 
-    const { num, userId, connection, socket } = React.useContext(Context);
+    const { userId, connection, socket } = React.useContext(Context);
+    const {slug: num} = useParams();
     const { isOnline } = useOnLine();
     const [message, setMessage] = useState(''); //aqui
     const [messageId, setMessageId] = useState(''); //aquí
@@ -81,16 +81,6 @@ function Chat() {
                     })
                 })
 
-            // //quizá este no va aquí y quizá es un manejador de eventos y no un effect
-            // //creo que sería con dependencias []
-            // console.log('Efecto mando auth por socket')
-            // supabase.auth.getSession().then(data => {
-            //     setUserId(data.data.session.user.id); // obtener user_id
-            //     socket.emit('authenticate', {
-            //         'user_id': data.data.session.user.id
-            //     })
-            // })
-
         } catch (error) {
             console.error(error)
         }
@@ -115,8 +105,6 @@ function Chat() {
     }, [num]); //Después de montarlo y cada vez que cambie num
 
     return (
-
-        (num ?
             <div className="desktop-main-container">
                 <header className="desktop-chat-header-container">
 
@@ -156,8 +144,6 @@ function Chat() {
                     </PopUp>)}
 
             </div>
-            : <Welcome />
-        )
     )
 }
 export { Chat }

@@ -1,9 +1,9 @@
 import React from "react";
 import { useEffect, useState, useContext } from "react";
-import { supabase } from "../../../supabase/client";
+import { supabase } from "../../supabase/client";
 import { useNavigate } from "react-router-dom";
 import './Login.css'
-import { Context } from "../../context";
+import { Context } from "../../Context";
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -27,6 +27,10 @@ function Login() {
             const { data, error } = await supabase.auth.signInWithPassword({
                 email,
                 password,
+            })
+
+            socket.emit('authenticate', {
+                'user_id': data.user.id
             })
 
             navigate('/conversations');

@@ -10,22 +10,15 @@ import { v4 } from 'uuid';
 
 
 function ChatsList({ c }) {
-    const { setNum } = React.useContext(Context);
-
-    const chatHandler = (num) => {
-        setNum(num);
-    }
     return (
 
         Object.keys(c).map((chat) => (
-            <a
+            <Link
                 key={chat}
-                onClick={() => (chatHandler(chat))}
-                // to={`/conversation/${chat}`}
+                to={`/conversations/${chat}`}
                 >
 
                 <li
-
                     className="desktop-chat-info">
                     <ProfilePhoto name={c[chat].name} type={"desktop-chat-info--photo--chatList"} />
                     <h2 className="desktop-chat-info--user">{c[chat].name}</h2>
@@ -33,7 +26,7 @@ function ChatsList({ c }) {
                         `${c[chat].direction === 'output' ? 'Tú: ' : ''}` +
                         c[chat].text}</p>
                 </li>
-            </a>
+            </Link>
         ))
     );
 
