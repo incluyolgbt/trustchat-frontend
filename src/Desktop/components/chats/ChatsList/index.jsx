@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 import { render } from 'react-dom';
 import './ChatsList.css'
 import { ProfilePhoto } from "../../../../Components/ProfilePhoto";
@@ -14,13 +15,14 @@ function ChatsList({ c }) {
     const chatHandler = (num) => {
         setNum(num);
     }
-    let i = 0;
     return (
 
         Object.keys(c).map((chat) => (
             <a
                 key={chat}
-                onClick={() => (chatHandler(chat))}>
+                onClick={() => (chatHandler(chat))}
+                // to={`/conversation/${chat}`}
+                >
 
                 <li
 

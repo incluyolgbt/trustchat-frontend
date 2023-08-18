@@ -21,6 +21,7 @@ function Desktop() {
                 <Route path='/' element={<Login />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/conversations' element={<Dashboard />} />
+                <Route path='/conversation/:slug' element={<Dashboard />} />
                 <Route path='/notfound' element={<NotFound />} />
                 <Route path='*' element={<NotFound />} />
             </Routes>

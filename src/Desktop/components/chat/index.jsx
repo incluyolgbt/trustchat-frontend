@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { supabase } from '../../../supabase/client';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ProfilePhoto } from '../../../Components/ProfilePhoto'
 import { PopUp } from '../../../modals/PopUp'
 import { ConnectionLost } from '../../../Components/ConnectionLost'
@@ -8,7 +8,8 @@ import { useOnLine } from '../../../Hooks/useOnLine';
 import './chat.css'
 import { Context } from '../../context';
 import { Welcome } from '../Welcome';
-export default function Chat() {
+
+function Chat() {
 
     const { num, userId, connection, socket } = React.useContext(Context);
     const { isOnline } = useOnLine();

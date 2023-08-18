@@ -2,8 +2,17 @@ posibles errores
 no hay conexión con el servidor (reviar el ok o 200 tanto de sockets como de db)
     redirigiar a página de falla interna 
 
-notificaciones en chats de nuevo mensaje
+YAAA: notificaciones en chats de nuevo mensaje
+
+agregar undicador visual de notificación Desktop UI (bolitas como en WA)
 
 página de bienvenida en desktop
 
 corregir header y type message components de phone UI
+
+link unico para cada chat en Desktop
+
+que el manager vea todos los chats y asignarlas con un menú click derecho 
+    que sea la misma app pero con diferentes componentes
+
+checar porqué crashó después de picar en notificacines phone UI

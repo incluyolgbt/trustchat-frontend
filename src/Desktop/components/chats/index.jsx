@@ -1,20 +1,35 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { supabase } from '../../../supabase/client';
 import { useNavigate } from "react-router-dom";
 import { PopUp } from '../../../modals/PopUp';
 import { ConnectionLost } from '../../../Components/ConnectionLost';
 import { useOnLine } from '../../../Hooks/useOnLine';
 import { ChatsList } from './ChatsList'
-import {v4} from 'uuid';
+import { v4 } from 'uuid';
 import './Chats.css';
+import { Context } from '../../context';
 
 function Chats() {
     const { isOnline } = useOnLine();
-
+    const { socket } = useContext(Context);
     const [chats, setChats] = useState([]);
     function chts(cht) {
         setChats((state) => [...state, cht]);
     }
+
+
+    useEffect(() => {
+
+        if(chats.length !== 0){
+            const algo = (msg) => {
+                const newChats = [...chats] //sobreescribir chats con el nuevo mensaje
+                newChats[0][msg.from] = {...newChats[0][msg.from], text: msg.text, direction: 'input'}
+                setChats(newChats);
+            };
+
+            socket.on('message', (msg) => algo(msg));
+        }
+    }, [chats])
 
     const navigate = useNavigate();
 
