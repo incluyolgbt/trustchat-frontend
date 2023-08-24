@@ -24,7 +24,6 @@ function Chat() {
 
     async function handlerSend(e) { //agrega los mensajes que yo envié
         e.preventDefault();
-        console.log(socket.id)
         socket.emit('message', {
             text: message,
             from: userId,
