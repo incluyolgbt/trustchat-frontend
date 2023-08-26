@@ -5,6 +5,7 @@ import { Login } from '../Components/Login';
 import { NotFound } from '../Components/NotFound';
 import { Dashboard } from './Dashboard';
 import { Welcome } from './components/Welcome';
+import { General } from './components/General';
 import { ContextProvider } from './context';
 import { Chat } from './components/chat';
 
@@ -25,6 +26,7 @@ function Desktop() {
             <Route path='/login' element={<Login />} />
             <Route path='/conversations' element={<Dashboard />}>
                 <Route path='' element={<Welcome/>} />
+                <Route path='general' element={<General/>} />
                 <Route path=':slug' element={
                     <ContextProvider>
                         <Chat />

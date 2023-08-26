@@ -17,7 +17,7 @@ function Chat() {
     const [messageId, setMessageId] = useState(''); //aquí
     const [messages, setMessages] = useState([]);
     const [userName, setUserName] = useState('');
-
+    console.log(socket.id)
     function msgs(msg) { //para que no se reinicie messages cada vez que se le agregue algo
         setMessages((state) => [msg, ...state]);
     }

@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { supabase } from '../../../supabase/client';
-import { useNavigate, useLocation } from "react-router-dom";
-import { PopUp } from '../../../modals/PopUp';
-import { ConnectionLost } from '../../../Components/ConnectionLost';
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { ProfilePhoto } from '../../../Components/ProfilePhoto';
 import { useOnLine } from '../../../Hooks/useOnLine';
 import { ChatsList } from './ChatsList'
 import { v4 } from 'uuid';
@@ -80,6 +79,15 @@ function Chats() {
                             onClick={() => supabase.auth.signOut()}>Log out</button>
                     </div>
                 </header>
+
+                <div
+                    className="chat-info">
+                    <Link to={`/conversations/general`}>
+                        <img className="chat-info--photo--chatList" src='https://avatars.githubusercontent.com/u/142632036?s=200&v=4'/>
+                        <h2 className="chat-info--user">Incluyo general</h2>
+                        <p className="chat-info--message"> Hola</p>
+                    </Link>
+                </div>
 
                 <ul className="desktop-chats-container">
                     {
