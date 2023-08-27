@@ -21,21 +21,21 @@ function Desktop() {
     }, [navigate])
 
     return (
+
         <Routes>
             <Route path='/' element={<Login />} />
             <Route path='/login' element={<Login />} />
             <Route path='/conversations' element={<Dashboard />}>
-                <Route path='' element={<Welcome/>} />
-                <Route path='general' element={<General/>} />
+                <Route path='' element={<ContextProvider><Welcome /></ContextProvider>} />
+                <Route path='general' element={<ContextProvider><General /></ContextProvider>} />
                 <Route path=':slug' element={
-                    <ContextProvider>
-                        <Chat />
-                    </ContextProvider>
+                    <ContextProvider><Chat /></ContextProvider>
                 } />
             </Route>
             <Route path='/notfound' element={<NotFound />} />
             <Route path='*' element={<NotFound />} />
         </Routes>
+
     )
 }
 

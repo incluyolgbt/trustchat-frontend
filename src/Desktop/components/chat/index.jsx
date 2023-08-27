@@ -10,14 +10,13 @@ import './chat.css'
 
 function Chat() {
 
-    const { userId, connection, socket } = React.useContext(Context);
-    const {slug: num} = useParams();
+    const { userId, socket} = React.useContext(Context);
+    const { slug: num } = useParams();
     const { isOnline } = useOnLine();
     const [message, setMessage] = useState(''); //aqui
     const [messageId, setMessageId] = useState(''); //aquí
     const [messages, setMessages] = useState([]);
     const [userName, setUserName] = useState('');
-    console.log(socket.id)
     function msgs(msg) { //para que no se reinicie messages cada vez que se le agregue algo
         setMessages((state) => [msg, ...state]);
     }
@@ -105,45 +104,45 @@ function Chat() {
     }, [num]); //Después de montarlo y cada vez que cambie num
 
     return (
-            <div className="desktop-main-container">
-                <header className="desktop-chat-header-container">
+        <div className="desktop-main-container">
+            <header className="desktop-chat-header-container">
 
-                    <ProfilePhoto
-                        name={userName}
-                        type={"desktop-chat-info--photo--chat"} />
-                    <span className="desktop-header-username">{userName}</span>
-                </header>
-                <ul className="desktop-chat-container">
-                    {
-                        messages.map((message, i) => (
-                            <li
-                                className={
-                                    message.from != userId ? "desktop-chat-container--message--recieved" : "desktop-chat-container--message"}
-                                key={i}><p>{message.text}</p></li>
-                        )
-                        )
-                    }
-                </ul>
-                <form
-                    className="desktop-type-message">
-                    <input
-                        value={message}
-                        className="desktop-type-message-editor"
-                        type='text' onChange={(e) => setMessage(e.target.value)} />
-                    <button
-                        type="submit"
-                        className="desktop-type-message--button"
-                        onClick={handlerSend}>
-                        Send
-                    </button>
-                </form>
+                <ProfilePhoto
+                    name={userName}
+                    type={"desktop-chat-info--photo--chat"} />
+                <span className="desktop-header-username">{userName}</span>
+            </header>
+            <ul className="desktop-chat-container">
+                {
+                    messages.map((message, i) => (
+                        <li
+                            className={
+                                message.from != userId ? "desktop-chat-container--message--recieved" : "desktop-chat-container--message"}
+                            key={i}><p>{message.text}</p></li>
+                    )
+                    )
+                }
+            </ul>
+            <form
+                className="desktop-type-message">
+                <input
+                    value={message}
+                    className="desktop-type-message-editor"
+                    type='text' onChange={(e) => setMessage(e.target.value)} />
+                <button
+                    type="submit"
+                    className="desktop-type-message--button"
+                    onClick={handlerSend}>
+                    Send
+                </button>
+            </form>
 
-                {(isOnline ? null :
-                    <PopUp>
-                        <ConnectionLost />
-                    </PopUp>)}
+            {(isOnline ? null :
+                <PopUp>
+                    <ConnectionLost />
+                </PopUp>)}
 
-            </div>
+        </div>
     )
 }
 export { Chat }

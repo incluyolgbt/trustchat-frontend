@@ -9,14 +9,12 @@ import './chat.css'
 
 function General() {
 
-    const { userId, connection, socket } = React.useContext(Context);
+    const { userId, socket, name, generalMsg, saveGeneralMsg } = React.useContext(Context);
     const { isOnline } = useOnLine();
     const [message, setMessage] = useState(''); //aqui
-    const [messages, setMessages] = useState([]);
-    console.log(socket.id)
 
     function msgs(msg) { //para que no se reinicie messages cada vez que se le agregue algo
-        setMessages((state) => [msg, ...state]);
+        saveGeneralMsg(msg)
     }
 
     async function handlerSend(e) { //agrega los mensajes que yo envié
@@ -24,14 +22,14 @@ function General() {
         socket.emit('general', {
             text: message,
             from: userId,
-            name:'Daniel Martínez Cornejo',
+            name: name,
             type: 'text',
         });
 
         msgs({
             text: message,
             from: userId,
-            name:'Daniel Martínez Cornejo',
+            name: name,
             type: 'text',
         });
         setMessage('');
@@ -45,8 +43,9 @@ function General() {
     }, [navigate]); //Al montarlo y una vez que cabie navigate
 
     useEffect(() => {
+        console.log('Efecto de socket on general');
         socket.on('general', msg => { // ese msg será el json recibido
-                msgs(msg);
+            saveGeneralMsg(msg);
         })
 
         return () => { //Esto solo lo ejecuta cuando se desmonta el componente
@@ -63,7 +62,7 @@ function General() {
             </header>
             <ul className="desktop-chat-container">
                 {
-                    messages.map((message, i) => (
+                    generalMsg.map((message, i) => (
                         <li
                             className={
                                 message.from != userId ? "desktop-chat-container--message--recieved" : "desktop-chat-container--message"}

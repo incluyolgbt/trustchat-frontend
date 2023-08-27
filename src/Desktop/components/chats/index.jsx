@@ -10,7 +10,7 @@ import { Context } from '../../context';
 
 function Chats() {
     const { isOnline } = useOnLine();
-    const { socket } = useContext(Context);
+    const { socket} = useContext(Context);
     const [chats, setChats] = useState([]);
 
     const location = useLocation();
@@ -45,6 +45,7 @@ function Chats() {
     var chatTemps = {};
     useEffect(() => {
         try {
+
             supabase.from('messages') //consulto por todos los mensajes y guardo solo el último  
                 .select(`
               *, 
@@ -52,7 +53,7 @@ function Chats() {
                   )
               `)
                 .then(data => {
-                    data.data.map((msg) => {
+                    data?.data.map((msg) => {
                         const temp = msg.contact_id;
                         chatTemps[temp] = {
                             name: msg.contacts.name,
@@ -83,7 +84,7 @@ function Chats() {
                 <div
                     className="chat-info">
                     <Link to={`/conversations/general`}>
-                        <img className="chat-info--photo--chatList" src='https://avatars.githubusercontent.com/u/142632036?s=200&v=4'/>
+                        <img className="chat-info--photo--chatList" src='https://avatars.githubusercontent.com/u/142632036?s=200&v=4' />
                         <h2 className="chat-info--user">Incluyo general</h2>
                         <p className="chat-info--message"> Hola</p>
                     </Link>
