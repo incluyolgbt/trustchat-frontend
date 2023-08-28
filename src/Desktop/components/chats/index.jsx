@@ -10,13 +10,18 @@ import { Context } from '../../context';
 
 function Chats() {
     const { isOnline } = useOnLine();
-    const { socket} = useContext(Context);
+    const { socket, deleteGeneralMsgs } = useContext(Context);
     const [chats, setChats] = useState([]);
 
     const location = useLocation();
 
     function chts(cht) {
         setChats((state) => [...state, cht]);
+    }
+
+    function handleLogOut(){
+        deleteGeneralMsgs();
+        supabase.auth.signOut()
     }
 
     useEffect(() => {
@@ -77,7 +82,7 @@ function Chats() {
                         <h1 className="desktop-chats">Chats</h1>
                         <button
                             className="desktop-header-button--logout"
-                            onClick={() => supabase.auth.signOut()}>Log out</button>
+                            onClick={handleLogOut}>Log out</button>
                     </div>
                 </header>
 

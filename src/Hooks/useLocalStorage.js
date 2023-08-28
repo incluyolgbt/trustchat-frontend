@@ -2,6 +2,7 @@ import React from "react";
 
 function useLocalStorage(itemName, initialValue) {
     const [item, setItem] = React.useState(initialValue);
+    
 
     React.useEffect(() => {
         try {
@@ -21,9 +22,12 @@ function useLocalStorage(itemName, initialValue) {
         }
     }, []);
 
-    const saveItem = (newItem) => {
-        setItem((state) => [newItem, ...state]);
-        localStorage.setItem(itemName, JSON.stringify(item));
+
+    const saveItem = (newItem) => { 
+        let temp = JSON.parse(localStorage.getItem('generalMsgs'));
+        temp = [newItem, ...temp];
+        setItem(temp);
+        localStorage.setItem(itemName, JSON.stringify(temp));
     }
 
     const deleteItems = () => {

@@ -10,11 +10,11 @@ function ContextProvider({ children }) {
     const [num, setNum] = useState('');
     const { connection, socket } = useConnection();
     const { userId, name } = useAuth(socket, connection);
-    const {item: generalMsg, saveItem: saveGeneralMsg} = useLocalStorage('generalMsgs', [])
+    const {item: generalMsg, saveItem: saveGeneralMsg, deleteItems: deleteGeneralMsgs} = useLocalStorage('generalMsgs', [])
 
     return (
         <Context.Provider value={{
-            num, setNum, generalMsg, saveGeneralMsg, name, userId, connection, socket
+            num, setNum, generalMsg, saveGeneralMsg, deleteGeneralMsgs, name, userId, connection, socket
         }}>
             {children}
         </Context.Provider>

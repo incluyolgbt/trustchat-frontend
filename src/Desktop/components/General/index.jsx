@@ -10,8 +10,10 @@ import './chat.css'
 function General() {
 
     const { userId, socket, name, generalMsg, saveGeneralMsg } = React.useContext(Context);
+    const {slug} = useParams()
     const { isOnline } = useOnLine();
     const [message, setMessage] = useState(''); //aqui
+    const [messages, setMessages] = useState([]);
 
     function msgs(msg) { //para que no se reinicie messages cada vez que se le agregue algo
         saveGeneralMsg(msg)

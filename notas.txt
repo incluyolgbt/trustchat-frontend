@@ -1,11 +1,10 @@
 Broadcast:
 
-- hacer que los mensajes se guarden en localstorage del Broadcast
-problema: los mensajes se borran cuando recibo mensaje pero no cuando meando por?
-
+- YAAAA: hacer que los mensajes se guarden en localstorage del Broadcast
+    problema: los mensajes se borran cuando recibo mensaje pero no cuando mando por?
 - YAAAA: buscar los nombres de las personas ya sea aquí o en backend para los mensajes de Broadcast
+- YAAA: Hacer que generalMsgs se borre de localStorage cuando se haga logout
 
 - estilizar Broadcast
-
 - Generar Broadcast pero para phone UI 
 - Verificar que funcione las notifiaciones en Broadcast phone UI 
