@@ -3,6 +3,7 @@ import { supabase } from "../supabase/client";
 
 function useAuth(socket, connection) {
     const [userId, setUserId] = useState('');
+    const [name, setName] = useState('');
 
     useEffect(() => {
         //quizá este no va aquí y quizá es un manejador de eventos y no un effect
@@ -13,6 +14,9 @@ function useAuth(socket, connection) {
                 setUserId(data.data.session.user.id); // obtener user_id
                 socket.emit('authenticate', {
                     'user_id': data.data.session.user.id
+                })
+                supabase.from('users').select('*').eq('id', data.data.session.user.id).then((d, error) => {
+                    setName(d?.data[0].name)
                 })
             }
         })
@@ -25,7 +29,7 @@ function useAuth(socket, connection) {
     }, [connection])
 
     return {
-        userId
+        userId, name
     }
 }
 
