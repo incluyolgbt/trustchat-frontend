@@ -8,6 +8,7 @@ import { Context } from "../../Context";
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [logInError, setLogInError] = useState(false);
     const { socket } = useContext(Context);
 
     const navigate = useNavigate();
@@ -21,27 +22,29 @@ function Login() {
         }
     }, [navigate]);
 
-    const handlerSubmit = async (e) => {
+    const handlerSubmit = (e) => {
         e.preventDefault();
-        try {
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email,
-                password,
-            })
 
-            socket.emit('authenticate', {
-                'user_id': data.user.id
-            })
+        supabase.auth.signInWithPassword({
+            email,
+            password,
+        }).then((data) => {
+            if (data.error?.message === "Invalid login credentials") {
+                setLogInError(true);
+            } else {
+                socket.emit('authenticate', {
+                    'user_id': data.data.user.id
+                });
+                navigate('/conversations');
+            }
 
-            navigate('/conversations');
-        } catch (error) {
+        })
 
-        }
     }
 
     return (
         <div className="background-login">
-            <form className="form-login" onSubmit={handlerSubmit}>
+            <form className={`form-login${logInError? "--error": ""}`} onSubmit={handlerSubmit}>
                 <h1>Login</h1>
                 <input
                     className="form-login--email"
@@ -55,6 +58,7 @@ function Login() {
                     placeholder="password"
                     onChange={e => setPassword(e.target.value)}
                 />
+                {logInError? <p className="form-login--error--message">Email o contraseña incorrecta</p>: null}
                 <button className="form-login--button" >Log in</button>
             </form>
         </div>
