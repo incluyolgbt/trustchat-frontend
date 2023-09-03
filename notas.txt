@@ -1,38 +1,15 @@
-posibles errores
-no hay conexión con el servidor (reviar el ok o 200 tanto de sockets como de db)
-    redirigiar a página de falla interna 
+Broadcast:
+- YAAAA: hacer que los mensajes se guarden en localstorage del Broadcast
+    problema: los mensajes se borran cuando recibo mensaje pero no cuando mando por?
+- YAAAA: buscar los nombres de las personas ya sea aquí o en backend para los mensajes de Broadcast
+- YAAA: Hacer que generalMsgs se borre de localStorage cuando se haga logout
+- YAAAA: Generar Broadcast pero para phone UI 
+- YAAAA: agregar contexto a chat phone UI para que se guarden en localStorage los mensajes
+- YAAAA: agregar borrado de mensajes cuando se hace logout
+- YAAA: Verificar que funcione las notifiaciones en Broadcast phone UI 
+    Generar condicinal para que aparezca notificiones de usuario vs notificaciones general
+- YAAAA: Cambiar estilo de notifiaciones para general en phoneUI
+- YAAAA: Agregar notificaciones en General para los demás chats
 
-notificaciones en chats de nuevo mensaje    
-    agregar indicador visual de notificación Desktop UI y Phone UI(bolitas como en WA)
-
-página de bienvenida en desktop diseño
-
-que el manager vea todos los chats y asignarlas con un menú click derecho 
-    que sea la misma app pero con diferentes componentes
-
-Página de managers
-Error al hacer click en notificaciones popup en phone pages->chat->notification
-página de bienvenida 
-notificaciones chats Desktop 
-notificaciones chats Phone
-En url colocar id del contacto y no su número
-
-distancia left y right de message container no están iguales
-botón send no está centrado en el espacio en chats Desktop
-botón send no está centrado en el espacio en chats phone
-
-
-Errores a señalar a usiarie:
-    mensaje no enviado (no recibir ok de socket)
-    no permitir enviar mensajes vacios 
-    password incorrecto 
-    cuando a accedo a número por url conversations/{número incorrecto o inválido} no me redirecciona a página no enconrada en Desktop
-
-
-diseño
-temas oscuro y claro
-
-recibir mensajes de voz
-fotos
-stickers
-documentos
+- YAAA: Pasar notificaciones a Components
+- YAAA: estilizar Broadcast Desktop UI

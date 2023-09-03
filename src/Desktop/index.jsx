@@ -5,6 +5,7 @@ import { Login } from '../Components/Login';
 import { NotFound } from '../Components/NotFound';
 import { Dashboard } from './Dashboard';
 import { Welcome } from './components/Welcome';
+import { General } from './components/General';
 import { ContextProvider } from './context';
 import { Chat } from './components/chat';
 
@@ -20,20 +21,21 @@ function Desktop() {
     }, [navigate])
 
     return (
+
         <Routes>
             <Route path='/' element={<Login />} />
             <Route path='/login' element={<Login />} />
             <Route path='/conversations' element={<Dashboard />}>
-                <Route path='' element={<Welcome/>} />
+                <Route path='' element={<ContextProvider><Welcome /></ContextProvider>} />
+                <Route path='general' element={<ContextProvider><General /></ContextProvider>} />
                 <Route path=':slug' element={
-                    <ContextProvider>
-                        <Chat />
-                    </ContextProvider>
+                    <ContextProvider><Chat /></ContextProvider>
                 } />
             </Route>
             <Route path='/notfound' element={<NotFound />} />
             <Route path='*' element={<NotFound />} />
         </Routes>
+
     )
 }
 

@@ -2,25 +2,20 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { supabase } from "../../../supabase/client";
-import { Context } from "../../../Context";
+import { Context } from "../../../Desktop/context";
 import { ProfilePhoto } from "../../../Components/ProfilePhoto";
-import {FaAngleLeft} from '@react-icons/all-files/fa/FaAngleLeft';
+import { FaAngleLeft } from '@react-icons/all-files/fa/FaAngleLeft';
 import { PopUp } from "../../../modals/PopUp";
 import { ConnectionLost } from "../../../Components/ConnectionLost";
 import { useOnLine } from "../../../Hooks/useOnLine";
 import './Chat.css';
-import { Notification } from "./Notification";
+import { Notification } from "../../../Components/Notification";
 
 
 function Chat() {
-    const {
-        userId,
-        socket,
-        setUserId
-    } = React.useContext(Context);
-    
+    const { userId, socket, saveGeneralMsg} = React.useContext(Context);
 
-    const {isOnline} = useOnLine();
+    const { isOnline } = useOnLine();
     let idTimeOut;
     let { slug } = useParams();
     const [message, setMessage] = useState(''); //aqui
@@ -28,6 +23,8 @@ function Chat() {
     const [messages, setMessages] = useState([]);
     const [userName, setUserName] = useState('');
     const [notification, setNotification] = useState(null);
+    const [general, setGeneral] = useState(false);
+
 
     function msgs(msg) { //para que no se reinicie messages cada vez que se le agregue algo
         setMessages((state) => [msg, ...state]);
@@ -91,12 +88,12 @@ function Chat() {
                     })
                 })
 
-            supabase.auth.getSession().then(data => {
-                setUserId(data.data.session.user.id); // obtener user_id
-                socket.emit('authenticate', {
-                    'user_id': data.data.session.user.id
-                })
-            })
+            // supabase.auth.getSession().then(data => {
+            //     setUserId(data.data.session.user.id); // obtener user_id
+            //     socket.emit('authenticate', {
+            //         'user_id': data.data.session.user.id
+            //     })
+            // })
 
         } catch (error) {
             console.error(error)
@@ -107,13 +104,14 @@ function Chat() {
     useEffect(() => {
 
         socket.on('message', msg => { // ese msg será el json recibido
-            if(msg.from === slug){
+            if (msg.from === slug) {
                 msgs(msg);
                 setMessageId(msg.messageId);
             } else {
+                setGeneral(false);
                 clearTimeout(idTimeOut);
                 setNotification(msg);
-                idTimeOut = setTimeout(()=>{
+                idTimeOut = setTimeout(() => {
                     setNotification(null);
                 }, 5000);
             }
@@ -124,20 +122,37 @@ function Chat() {
         }
     }, []);
 
+    useEffect(() => {
+
+        socket.on('general', msg => { // ese msg será el json recibido
+            saveGeneralMsg(msg); //Aquí tengo que pone el setMSG 
+            clearTimeout(idTimeOut);
+            setNotification(msg);
+            setGeneral(true);
+            idTimeOut = setTimeout(() => {
+                setNotification(null);
+            }, 5000);
+        })
+
+        return () => {
+            socket.off('general')
+        }
+    }, []);
+
     return (
         <div className="main-container">
-            {(notification && <Notification chat={notification}/>)}
+            {(notification && <Notification chat={notification} general={general} />)}
             <header className="chat-header-container">
                 <Link
                     className="chat-header--back"
                     to={'/conversations'}>
-                    <FaAngleLeft className="chat-header--bacl--arrow"/>
+                    <FaAngleLeft className="chat-header--bacl--arrow" />
                 </Link>
 
 
-                <ProfilePhoto 
-                name={userName}
-                type={"chat-info--photo--chat"}/>
+                <ProfilePhoto
+                    name={userName}
+                    type={"chat-info--photo--chat"} />
                 <span className="header-username">{userName}</span>
             </header>
             <ul className="chat-container">
@@ -167,7 +182,7 @@ function Chat() {
 
             {(isOnline ? null :
                 <PopUp>
-                    <ConnectionLost/>
+                    <ConnectionLost />
                 </PopUp>)}
 
         </div>
