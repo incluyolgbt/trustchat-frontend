@@ -1,15 +1,20 @@
-Broadcast:
-- YAAAA: hacer que los mensajes se guarden en localstorage del Broadcast
-    problema: los mensajes se borran cuando recibo mensaje pero no cuando mando por?
-- YAAAA: buscar los nombres de las personas ya sea aquí o en backend para los mensajes de Broadcast
-- YAAA: Hacer que generalMsgs se borre de localStorage cuando se haga logout
-- YAAAA: Generar Broadcast pero para phone UI 
-- YAAAA: agregar contexto a chat phone UI para que se guarden en localStorage los mensajes
-- YAAAA: agregar borrado de mensajes cuando se hace logout
-- YAAA: Verificar que funcione las notifiaciones en Broadcast phone UI 
-    Generar condicinal para que aparezca notificiones de usuario vs notificaciones general
-- YAAAA: Cambiar estilo de notifiaciones para general en phoneUI
-- YAAAA: Agregar notificaciones en General para los demás chats
+Validation:
+    - No permitir enviar mensajes vacíos. 
+        - YAAA: chat phone UI
+        - YAAA: chat desktop
+        - YAAA: general phone UI
+        - YAAA: general desktop
 
-- YAAA: Pasar notificaciones a Components
-- YAAA: estilizar Broadcast Desktop UI
+Errores:
+    - YAAA: Generar un indicador para el usuario de que fue entregado el mensaje.
+    - YAAA: chat phone UI
+
+
+    - YAAA: Error 404 para URLs inválidas: 
+        - Phone UI
+        - Desktop
+        
+
+Limit length messages:
+    - YAAA: limitar mensajes en chats desktop
+    - YAAA: phone UI

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, useDeferredValue } from 'react'
 import { supabase } from '../../../supabase/client';
 import { useNavigate, useParams } from "react-router-dom";
 import { ProfilePhoto } from '../../../Components/ProfilePhoto'
@@ -10,33 +10,44 @@ import './chat.css'
 
 function Chat() {
 
-    const { userId, socket} = React.useContext(Context);
+    const { userId, socket } = React.useContext(Context);
     const { slug: num } = useParams();
     const { isOnline } = useOnLine();
     const [message, setMessage] = useState(''); //aqui
     const [messageId, setMessageId] = useState(''); //aquí
     const [messages, setMessages] = useState([]);
     const [userName, setUserName] = useState('');
+    const [change, setChange] = useState('enviado');
+    const value = useDeferredValue(change);
+
+
     function msgs(msg) { //para que no se reinicie messages cada vez que se le agregue algo
         setMessages((state) => [msg, ...state]);
     }
 
     async function handlerSend(e) { //agrega los mensajes que yo envié
         e.preventDefault();
-        console.log(socket.id)
-        socket.emit('message', {
+        setChange('enviando');
+        if (!message) return null;
+        msgs({
             text: message,
             from: userId,
             to: num,
             type: 'text',
             messageId: messageId,
         });
-        msgs({
+        socket.emit('message', {
             text: message,
             from: userId,
             to: num,
             type: 'text',
-            messageId: messageId
+            messageId: messageId,
+        }, (response) => {
+            if (response.status === 200) {
+                setChange('enviado');
+            } else {
+                setChange('error');
+            }
         });
         setMessage('');
     };
@@ -62,6 +73,7 @@ function Chat() {
                 `)
                 .eq('contact_id', num)
                 .then(data => {
+                    if (data.error?.message || !data.data.length) return navigate('/notfound');
                     setUserName(data.data[0].contacts.name)
                     data.data.map((msg) => {
                         msgs(
@@ -112,15 +124,19 @@ function Chat() {
                     type={"desktop-chat-info--photo--chat"} />
                 <span className="desktop-header-username">{userName}</span>
             </header>
-            <ul className="desktop-chat-container">
+            <ul
+                className="desktop-chat-container">
                 {
                     messages.map((message, i) => (
                         <li
                             className={
                                 message.from != userId ? "desktop-chat-container--message--recieved" : "desktop-chat-container--message"}
-                            key={i}><p>{message.text}</p></li>
-                    )
-                    )
+                            key={i}>
+                            <p>{message.text}</p>
+                            {(messages[0] === message && message.from === userId) ? <p className='sent'>{value}</p> :
+                                (message.from === userId? <p className='sent'>enviado</p>: null)}
+                        </li>
+                    ))
                 }
             </ul>
             <form
