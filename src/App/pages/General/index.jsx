@@ -23,6 +23,7 @@ function General() {
 
     async function handlerSend(e) { //agrega los mensajes que yo envié
         e.preventDefault();
+        if(!message) return null;
         socket.emit('general', {
             text: message,
             from: userId,

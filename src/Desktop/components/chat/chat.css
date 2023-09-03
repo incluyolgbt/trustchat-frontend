@@ -65,8 +65,8 @@ body{
 
 .desktop-chat-container--message{
     position: relative;
-    display: flex;
-    align-items: center;
+    /* display: flex;
+    align-items: end; */
     transform: translate(-100%, 0);
     left: 98%;
     margin-top: 5px;
@@ -81,6 +81,15 @@ body{
     color: white;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1.5rem;
+}
+
+.sent{
+    position: relative;
+    color: gray;
+    font-size: 10px;
+    margin: 0 0 0 10px;
+    bottom: -7px;
+
 }
 
 .desktop-type-message {

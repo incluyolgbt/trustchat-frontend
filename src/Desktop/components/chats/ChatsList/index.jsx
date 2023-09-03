@@ -24,7 +24,8 @@ function ChatsList({ c }) {
                     <h2 className="desktop-chat-info--user">{c[chat].name}</h2>
                     <p className="desktop-chat-info--message">{
                         `${c[chat].direction === 'output' ? 'Tú: ' : ''}` +
-                        c[chat].text}</p>
+                        (c[chat].text.length < 80? c[chat].text: c[chat].text.substring(0,80).concat('...'))
+                        }</p>
                 </li>
             </Link>
         ))

@@ -26,7 +26,7 @@ function useAuth(socket, connection) {
             socket.off('authenticate')
         }
 
-    }, [connection])
+    }, [])
 
     return {
         userId, name

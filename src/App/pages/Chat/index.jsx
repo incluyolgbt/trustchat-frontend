@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useDeferredValue } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { supabase } from "../../../supabase/client";
 import { Context } from "../../../Desktop/context";
@@ -13,7 +12,7 @@ import { Notification } from "../../../Components/Notification";
 
 
 function Chat() {
-    const { userId, socket, saveGeneralMsg} = React.useContext(Context);
+    const { userId, socket, saveGeneralMsg } = React.useContext(Context);
 
     const { isOnline } = useOnLine();
     let idTimeOut;
@@ -24,7 +23,8 @@ function Chat() {
     const [userName, setUserName] = useState('');
     const [notification, setNotification] = useState(null);
     const [general, setGeneral] = useState(false);
-
+    const [change, setChange] = useState('enviado');
+    const value = useDeferredValue(change);
 
     function msgs(msg) { //para que no se reinicie messages cada vez que se le agregue algo
         setMessages((state) => [msg, ...state]);
@@ -32,19 +32,27 @@ function Chat() {
 
     async function handlerSend(e) { //agrega los mensajes que yo envié
         e.preventDefault();
-        socket.emit('message', {
-            text: message,
-            from: userId,
-            to: slug,
-            type: 'text',
-            messageId: messageId,
-        });
+        setChange('enviando');
+        if (!message) return null;
         msgs({
             text: message,
             from: userId,
             to: slug,
             type: 'text',
             messageId: messageId
+        });
+        socket.emit('message', {
+            text: message,
+            from: userId,
+            to: slug,
+            type: 'text',
+            messageId: messageId,
+        }, (response) => {
+            if (response.status === 200) {
+                setChange('enviado');
+            } else {
+                setChange('error');
+            }
         });
         setMessage('');
     };
@@ -69,7 +77,7 @@ function Chat() {
                 `)
                 .eq('contact_id', slug)
                 .then(data => {
-                    if (data.data.length === 0) return navigate('/notfound');
+                    if (data.error?.message || !data.data.length) return navigate('/notfound');
                     setUserName(data.data[0].contacts.name)
                     data.data.map((msg) => {
                         msgs(
@@ -87,13 +95,6 @@ function Chat() {
                         )
                     })
                 })
-
-            // supabase.auth.getSession().then(data => {
-            //     setUserId(data.data.session.user.id); // obtener user_id
-            //     socket.emit('authenticate', {
-            //         'user_id': data.data.session.user.id
-            //     })
-            // })
 
         } catch (error) {
             console.error(error)
@@ -161,7 +162,12 @@ function Chat() {
                         <li
                             className={
                                 message.from != userId ? "chat-container--message--recieved" : "chat-container--message"}
-                            key={i}><p>{message.text}</p></li>
+                            key={i}>
+                            <p>{message.text}</p>
+                            {/* Si el mensaje es el último y yo lo envío coloca value, si solo lo envié yo pero no es el último coloca enviado */}
+                            {(messages[0] === message && message.from === userId) ? <p className='sent'>{value}</p> :
+                                (message.from === userId ? <p className='sent'>enviado</p> : null)}
+                        </li>
                     )
                     )
                 }
