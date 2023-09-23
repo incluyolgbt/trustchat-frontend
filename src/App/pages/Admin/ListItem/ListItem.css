@@ -1,0 +1,55 @@
+.chat-info{
+    position: relative;
+    padding: 10px;
+    width: 90%;
+    left: 50%;
+    transform: translate(-50%);
+    border-radius: 20px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    border: rgb(90, 90, 90) 1px solid;
+    list-style: none;
+    cursor: pointer;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1rem;
+    color: #ffffff;
+}
+
+.chat-info--photo--chatList{
+    position: absolute;
+    top:50%;
+    margin-left: 20px;
+    transform: translate(-50%, -50%);
+    width: 38px;
+    height: 38px;
+}
+
+.chat-info--user{
+    margin-left: 50px;
+    font-size: 1.2rem;
+}
+
+.chat-info--message{
+    margin-left: 60px;
+    font-size: 1rem;
+}
+
+.chat-info--helper{
+    margin-left: 50px;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.chat-info--asignee-select {
+    margin-left: 60px;
+    font-size: 1rem;
+    color: #000000;
+}
+
+a:-webkit-any-link {
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+  }

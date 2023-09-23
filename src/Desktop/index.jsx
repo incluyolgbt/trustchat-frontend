@@ -8,35 +8,54 @@ import { Welcome } from './components/Welcome';
 import { General } from './components/General';
 import { ContextProvider } from './context';
 import { Chat } from './components/chat';
+import { Admin } from '../App/pages/Admin';
 
 function Desktop() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        supabase.auth.onAuthStateChange((event, session) => {
-            if (!session) {
-                navigate('/login')
-            }
-        })
-    }, [navigate])
+  useEffect(() => {
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (!session) {
+        navigate('/login');
+      }
+    });
+  }, [navigate]);
 
-    return (
-
-        <Routes>
-            <Route path='/' element={<Login />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/conversations' element={<Dashboard />}>
-                <Route path='' element={<ContextProvider><Welcome /></ContextProvider>} />
-                <Route path='general' element={<ContextProvider><General /></ContextProvider>} />
-                <Route path=':slug' element={
-                    <ContextProvider><Chat /></ContextProvider>
-                } />
-            </Route>
-            <Route path='/notfound' element={<NotFound />} />
-            <Route path='*' element={<NotFound />} />
-        </Routes>
-
-    )
+  return (
+    <Routes>
+      <Route path='/' element={<Login />} />
+      <Route path='/login' element={<Login />} />
+      <Route path='/conversations' element={<Dashboard />}>
+        <Route
+          path=''
+          element={
+            <ContextProvider>
+              <Welcome />
+            </ContextProvider>
+          }
+        />
+        <Route
+          path='general'
+          element={
+            <ContextProvider>
+              <General />
+            </ContextProvider>
+          }
+        />
+        <Route
+          path=':slug'
+          element={
+            <ContextProvider>
+              <Chat />
+            </ContextProvider>
+          }
+        />
+      </Route>
+      <Route path='/admin' element={<Admin />} />
+      <Route path='/notfound' element={<NotFound />} />
+      <Route path='*' element={<NotFound />} />
+    </Routes>
+  );
 }
 
 export { Desktop };
