@@ -12,30 +12,54 @@ function Chats() {
     const { isOnline } = useOnLine();
     const { socket, deleteGeneralMsgs } = useContext(Context);
     const [chats, setChats] = useState([]);
+    const [key, setKey] = useState(1);
 
     const location = useLocation();
 
     function chts(cht) {
-        setChats((state) => [...state, cht]);
+        setChats(cht);
     }
 
-    function handleLogOut(){
+    function handleLogOut() {
         deleteGeneralMsgs();
         supabase.auth.signOut()
     }
 
-    useEffect(() => {
+    const susbscribeForChanges = () => {
+        supabase
+            .channel('custom-insert-channel')
+            .on(
+                'postgres_changes',
+                { event: '*', schema: 'public', table: 'messages' },
+                () => {
+                    console.log('Mensaje nuevo recibido');
+                    loadChatList();
+                    setKey(key + 1);
+                }
+            )
+            .subscribe();
+    };
 
-        if (chats.length !== 0) {
-            const algo = (msg) => {
-                const newChats = [...chats] //sobreescribir chats con el nuevo mensaje
-                newChats[0][msg.from] = { ...newChats[0][msg.from], text: msg.text, direction: 'input' }
-                setChats(newChats);
+
+    const loadChatList = async () => {
+        var chatTemps = {};
+        let { data, error } = await supabase.rpc('user_fetch_conv_list');
+        data.map(msg => {
+            const temp = msg.contact_id;
+            chatTemps[temp] = {
+                name: msg.contact_name,
+                text: (msg.content.body ? msg.content.body : msg.content),
+                direction: msg.direction
             };
+        });
+        chts(chatTemps)
+    };
 
-            socket.on('message', (msg) => algo(msg));
-        }
-    }, [chats])
+    /** On component render **/
+    useEffect(() => {
+        loadChatList();
+        susbscribeForChanges();
+    }, []);
 
     const navigate = useNavigate();
 
@@ -47,36 +71,9 @@ function Chats() {
         }
     }, [navigate])
 
-    var chatTemps = {};
-    useEffect(() => {
-        try {
-
-            supabase.from('messages') //consulto por todos los mensajes y guardo solo el último  
-                .select(`
-              *, 
-              contacts (name
-                  )
-              `)
-                .then(data => {
-                    data?.data.map((msg) => {
-                        const temp = msg.contact_id;
-                        chatTemps[temp] = {
-                            name: msg.contacts.name,
-                            text: (msg.content.body ? msg.content.body : msg.content),
-                            direction: msg.direction
-                        };
-                    })
-                    chts(chatTemps)
-                })
-        } catch (error) {
-            console.error(error)
-        }
-
-    }, [])
-
     return (
         (isOnline ?
-            <>
+            <div key={key}>
                 <header className="desktop-chats-header--container">
                     <div className="desktop-chat-header--container--options">
                         <h1 className="desktop-chats">Chats</h1>
@@ -97,15 +94,13 @@ function Chats() {
 
                 <ul className="desktop-chats-container">
                     {
-                        chats.map((c, i) => (
-                            <ChatsList
-                                key={v4()}
-                                c={c} />
-                        ))
+                        <ChatsList
+                            key={key}
+                            c={chats} />
                     }
                 </ul>
 
-            </>
+            </div>
             : null)
 
     );
