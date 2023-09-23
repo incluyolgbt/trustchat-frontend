@@ -9,6 +9,7 @@ import { General } from './components/General';
 import { ContextProvider } from './context';
 import { Chat } from './components/chat';
 import { Admin } from '../App/pages/Admin';
+import { PasswordReset } from '../Components/SessionManagement/PasswordReset';
 
 function Desktop() {
   const navigate = useNavigate();
@@ -52,6 +53,7 @@ function Desktop() {
         />
       </Route>
       <Route path='/admin' element={<Admin />} />
+      <Route path='/resetPassword' element={<PasswordReset />} />
       <Route path='/notfound' element={<NotFound />} />
       <Route path='*' element={<NotFound />} />
     </Routes>
