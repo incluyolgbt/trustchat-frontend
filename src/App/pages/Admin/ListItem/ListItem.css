@@ -45,6 +45,7 @@
 .chat-info--asignee-select {
     margin-left: 60px;
     font-size: 1rem;
+    color: #000000;
 }
 
 a:-webkit-any-link {

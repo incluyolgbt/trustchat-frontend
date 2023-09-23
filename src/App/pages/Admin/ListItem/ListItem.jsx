@@ -3,13 +3,16 @@ import { useNavigate, Link } from 'react-router-dom';
 import './ListItem.css';
 import { ProfilePhoto } from '../../../../Components/ProfilePhoto';
 import { supabase } from '../../../../supabase/client';
+import AsyncSelect from 'react-select';
 
 function ListItem({ data }) {
-  let { contact_id, contact_name, content, user_id, user_name } = data;
+  let { contact_id, contact_name, contact_wanum, content, user_id, user_name } =
+    data;
+
   const [userOptions, setUserOptions] = useState([]);
 
   useEffect(() => {
-    setUserOptions([{ id: user_id, name: user_name }]);
+    setUserOptions([{ value: user_id, label: user_name }]);
   }, []);
 
   const fetchActiveUsers = async () => {
@@ -24,15 +27,34 @@ function ListItem({ data }) {
       .in('id', activeUserIds);
 
     if (!error) {
+      const activeUserMap = activeUsers.map((user) => {
+        return { value: user.id, label: user.name };
+      });
+
       activeUserIds.includes(user_id)
-        ? setUserOptions(activeUsers)
-        : setUserOptions([{ id: user_id, name: user_name }, ...activeUsers]);
+        ? setUserOptions(activeUserMap)
+        : setUserOptions([
+            { value: user_id, label: user_name },
+            ...activeUserMap,
+          ]);
     }
   };
 
-  const assignConversationToUser = async (event) => {
-    const newUser = event.target.value;
-    // TODO: POST to backend
+  const assignConversationToUser = async (user_id, contact) => {
+    const url = `${import.meta.env.VITE_BACKEND_URL}/assignUser`;
+
+    const body = {
+      user_id,
+      contact,
+    };
+
+    await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
   };
 
   // Soporte para mensajes en formato JSON
@@ -44,26 +66,19 @@ function ListItem({ data }) {
     <li className='chat-info' key={contact_id}>
       <ProfilePhoto name={contact_name} type={'chat-info--photo--chatList'} />
       <h2 className='chat-info--user'>{contact_name}</h2>
-      <p className='chat-info--message'>
-        {content.length < 80 ? content : content.substring(0, 80).concat('...')}
-      </p>
       <p className='chat-info--helper'>Chat asignado a:</p>
-      <select
+      <AsyncSelect
         className='chat-info--asignee-select'
-        defaultValue={user_id}
-        onClick={() => {
+        defaultValue={{ vale: user_id, label: user_name }}
+        options={userOptions}
+        onChange={(event) => {
+          assignConversationToUser(event.value, contact_wanum);
+        }}
+        onMenuOpen={() => {
           fetchActiveUsers();
         }}
-        onChange={(e) => {
-          assignConversationToUser(e);
-        }}
-      >
-        {userOptions.map((option) => (
-          <option value={option.id} key={option.id}>
-            {option.name}
-          </option>
-        ))}
-      </select>
+        cacheOptions={false}
+      />
     </li>
   );
 }
