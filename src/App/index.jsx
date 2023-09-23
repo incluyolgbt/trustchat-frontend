@@ -10,6 +10,7 @@ import { Loading } from './pages/Loading';
 import { General } from './pages/General';
 import { ContextProvider } from '../Desktop/context';
 import { Admin } from './pages/Admin';
+import { PasswordReset } from '../Components/SessionManagement/PasswordReset';
 
 export default function App() {
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ export default function App() {
             </ContextProvider>
           }
         />
+        <Route path='/resetPassword' element={<PasswordReset />} />
         <Route path='/notfound' element={<NotFound />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
