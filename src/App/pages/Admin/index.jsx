@@ -3,10 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../../supabase/client';
 import { ListItem } from './ListItem/ListItem';
 
-const {
-  data: { user },
-} = await supabase.auth.getUser();
-
 const Admin = () => {
   const handleLogOut = () => {
     supabase.auth.signOut();
@@ -31,7 +27,7 @@ const Admin = () => {
       .subscribe();
   };
 
-  const loadChatList = async () => {
+  const loadChatList = async (user) => {
     // Si el usuario es administrador, obtener conversaciones
     if (user && user.email === import.meta.env.VITE_ADMIN_ID) {
       let { data, error } = await supabase.rpc('admin_fetch_conv_list');
@@ -49,10 +45,20 @@ const Admin = () => {
     }
   };
 
+  const authenticate = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    return user;
+  };
+
   /** On component render **/
   useEffect(() => {
-    loadChatList();
-    susbscribeForChanges();
+    (async function () {
+      const user = await authenticate();
+      loadChatList(user);
+      susbscribeForChanges();
+    })();
   }, []);
 
   return (

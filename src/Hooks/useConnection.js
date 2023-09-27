@@ -1,27 +1,27 @@
-import { useEffect } from "react";
-import { io } from "socket.io-client";
+import { useEffect } from 'react';
+import { io } from 'socket.io-client';
 
-const socket = io('/');
+const socket = io(import.meta.env.VITE_BACKEND_URL);
 
-function useConnection(){
-    useEffect(()=>{
-        socket.on('connect', () => {
-            console.log('connected');
-        });
+function useConnection() {
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log('connected');
+    });
 
-        return () => {
-            socket.on('disconnect', ()=>{
-                console.log('disconnected');
-            });
-        }
-    }, []);
+    return () => {
+      socket.on('disconnect', () => {
+        console.log('disconnected');
+      });
+    };
+  }, []);
 
-    const connection = socket.connected;
+  const connection = socket.connected;
 
-    return {
-        connection, socket
-    }
-
+  return {
+    connection,
+    socket,
+  };
 }
 
-export {useConnection}
+export { useConnection };
