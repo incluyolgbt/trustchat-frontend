@@ -10,9 +10,7 @@ function useConnection() {
     });
 
     return () => {
-      socket.on('disconnect', () => {
-        console.log('disconnected');
-      });
+      socket.disconnect();
     };
   }, []);
 
