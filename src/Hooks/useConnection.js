@@ -1,27 +1,28 @@
-import { useEffect } from "react";
-import { io } from "socket.io-client";
+import { io } from 'socket.io-client';
 
-const socket = io('/');
+function useConnection() {
+  const handleSocketAuth = (userId, userName) => {
+    if (userId) {
+      let socket = io(import.meta.env.VITE_BACKEND_URL);
 
-function useConnection(){
-    useEffect(()=>{
-        socket.on('connect', () => {
-            console.log('connected');
-        });
+      socket.emit('authenticate', {
+        user_id: userId,
+        user_name: userName,
+      });
 
-        return () => {
-            socket.on('disconnect', ()=>{
-                console.log('disconnected');
-            });
-        }
-    }, []);
-
-    const connection = socket.connected;
-
-    return {
-        connection, socket
+      return socket;
     }
+  };
 
+  const handleSocketUnauth = (socket) => {
+    socket?.off();
+    socket?.disconnect();
+  };
+
+  return {
+    handleSocketAuth,
+    handleSocketUnauth,
+  };
 }
 
-export {useConnection}
+export { useConnection };

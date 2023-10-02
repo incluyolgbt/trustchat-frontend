@@ -1,35 +1,28 @@
-import React from "react";
-import { useEffect, useState } from "react";
-import io from 'socket.io-client';
-const socket = io("/");
+import { createContext, useState } from 'react';
+import Loader from './../Components/UI/Loader';
 
-const Context = React.createContext();
+const Context = createContext();
 
 function ContextProvider({ children }) {
+  const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
-    const [userId, setUserId] = useState('');
-    const [userName, setUserName] = useState('');
-    const [search, setSearch] = useState('');
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
-
-    return (
-        <Context.Provider value={{
-            userId,
-            setUserId,
-            userName,
-            setUserName,
-            search,
-            setSearch,
-            loading,
-            setLoading,
-            error,
-            setError,
-            socket
-        }}>
-            {children}
-        </Context.Provider>
-    );
+  return (
+    <Context.Provider
+      value={{
+        search,
+        setSearch,
+        loading,
+        setLoading,
+        error,
+        setError,
+      }}
+    >
+      {loading && <Loader />}
+      {children}
+    </Context.Provider>
+  );
 }
 
-export { Context, ContextProvider }
+export { Context, ContextProvider };
