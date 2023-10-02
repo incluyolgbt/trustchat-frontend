@@ -1,41 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { AuthContext } from '../Context/AuthContext';
 import { supabase } from '../supabase/client';
+import { useLocalStorage } from './useLocalStorage';
+import { useConnection } from './useConnection';
 
-function useAuth(socket, connection) {
-  const [userId, setUserId] = useState('');
-  const [name, setName] = useState('');
+function useAuth() {
+  const { setAuthUser, setAuthSocket, authSocket } = useContext(AuthContext);
+  const { handleSocketAuth, handleSocketUnauth } = useConnection();
 
-  useEffect(() => {
-    //quizá este no va aquí y quizá es un manejador de eventos y no un effect
-    //creo que sería con dependencias []
-    console.log('Efecto mando auth por socket');
-    supabase.auth.getSession().then((data) => {
-      if (data.data.session) {
-        setUserId(data.data.session.user.id); // obtener user_id
-        socket.emit('authenticate', {
-          user_id: data.data.session.user.id,
-          user_name: data.data.session.user.name,
-        });
-        supabase
-          .from('users')
-          .select('*')
-          .eq('id', data.data.session.user.id)
-          .then((d, error) => {
-            setName(d?.data[0].name);
-          });
-      }
+  const { deleteItems: deleteGeneralMsgs } = useLocalStorage('generalMsgs', []);
+
+  const handlePasswordLogin = async (email, password) => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
     });
 
-    return () => {
-      //Esto solo lo ejecuta cuando se desmonta el componente
-      console.log('Efecto de socket auth off');
-      socket.off('authenticate');
-    };
-  }, []);
+    if (!error) {
+      data.user.name = await fetchUserName(data.user.id);
+      setAuthUser(data.user);
+
+      let socket = handleSocketAuth(data.user.id, data.user.name);
+      if (socket && !authSocket) {
+        setAuthSocket(socket);
+      }
+    }
+
+    return { user: data.user, error };
+  };
+
+  const handleLogout = () => {
+    deleteGeneralMsgs();
+    handleSocketUnauth(authSocket);
+    supabase.auth.signOut();
+    setAuthUser(null);
+  };
+
+  const fetchUserName = async (userId) => {
+    const { data, error } = await supabase
+      .from('users')
+      .select('name')
+      .eq('id', userId);
+
+    if (!error && data.length) {
+      return data[0].name;
+    } else {
+      return 'amigue';
+    }
+  };
 
   return {
-    userId,
-    name,
+    handlePasswordLogin,
+    handleLogout,
+    fetchUserName,
   };
 }
 

@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import './ListItem.css';
+import { useEffect, useState } from 'react';
 import { ProfilePhoto } from '../../../../Components/ProfilePhoto';
 import { supabase } from '../../../../supabase/client';
 import AsyncSelect from 'react-select';
+import './ListItem.css';
 
 function ListItem({ data }) {
   let { contact_id, contact_name, contact_wanum, content, user_id, user_name } =

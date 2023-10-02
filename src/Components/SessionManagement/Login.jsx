@@ -1,52 +1,31 @@
-import React from 'react';
-import { useEffect, useState, useContext } from 'react';
-import { supabase } from '../../supabase/client';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../Hooks/useAuth';
 import './Login.css';
-import { Context } from '../../Context';
 
 function Login() {
+  const navigate = useNavigate();
+  const { handlePasswordLogin } = useAuth();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [logInError, setLogInError] = useState(false);
-  const { socket } = useContext(Context);
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!supabase.auth.getSession()) {
-      navigate('/login');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { error } = await handlePasswordLogin(email, password);
+    if (error && error.message.includes('Invalid login credentials')) {
+      setLogInError(true);
     } else {
       navigate('/conversations');
     }
-  }, [navigate]);
-
-  const handlerSubmit = (e) => {
-    e.preventDefault();
-
-    supabase.auth
-      .signInWithPassword({
-        email,
-        password,
-      })
-      .then((data) => {
-        if (data.error?.message === 'Invalid login credentials') {
-          setLogInError(true);
-        } else {
-          socket.emit('authenticate', {
-            user_id: data.data.user.id,
-            user_name: data.data.user.name,
-          });
-          navigate('/conversations');
-        }
-      });
   };
 
   return (
     <div className='background-login'>
       <form
         className={`form-login${logInError ? '--error' : ''}`}
-        onSubmit={handlerSubmit}
+        onSubmit={handleSubmit}
       >
         <h1>Login</h1>
         <input

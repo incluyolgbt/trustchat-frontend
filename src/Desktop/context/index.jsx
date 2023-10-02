@@ -1,24 +1,31 @@
-import React from "react";
-import { useState } from "react";
-import { useAuth } from "../../Hooks/useAuth";
-import { useConnection } from "../../Hooks/useConnection";
-import { useLocalStorage } from "../../Hooks/useLocalStorage";
+import { createContext } from 'react';
+import { useState } from 'react';
+import { useLocalStorage } from '../../Hooks/useLocalStorage';
 
-const Context = React.createContext();
+const Context = createContext();
 
 function ContextProvider({ children }) {
-    const [num, setNum] = useState('');
-    const { connection, socket } = useConnection();
-    const { userId, name } = useAuth(socket, connection);
-    const {item: generalMsg, saveItem: saveGeneralMsg, deleteItems: deleteGeneralMsgs} = useLocalStorage('generalMsgs', [])
+  const [num, setNum] = useState('');
 
-    return (
-        <Context.Provider value={{
-            num, setNum, generalMsg, saveGeneralMsg, deleteGeneralMsgs, name, userId, connection, socket
-        }}>
-            {children}
-        </Context.Provider>
-    );
+  const {
+    item: generalMsg,
+    saveItem: saveGeneralMsg,
+    deleteItems: deleteGeneralMsgs,
+  } = useLocalStorage('generalMsgs', []);
+
+  return (
+    <Context.Provider
+      value={{
+        num,
+        setNum,
+        generalMsg,
+        saveGeneralMsg,
+        deleteGeneralMsgs,
+      }}
+    >
+      {children}
+    </Context.Provider>
+  );
 }
 
-export { Context, ContextProvider }
+export { Context, ContextProvider };
